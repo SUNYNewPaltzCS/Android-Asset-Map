@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NewburghMap</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="map_url">https://www.newburghmap.com/kml/orange_county.kmz</string>
+</resources>
