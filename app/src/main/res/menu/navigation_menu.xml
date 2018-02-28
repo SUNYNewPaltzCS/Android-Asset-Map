@@ -8,4 +8,6 @@
         android:title="Health" />
     <item android:id="@+id/nav_food"
         android:title="food" />
+    <item android:id="@+id/nav_test"
+        android:title="test333" />
 </menu>
