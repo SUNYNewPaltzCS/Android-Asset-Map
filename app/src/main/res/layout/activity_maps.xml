@@ -21,6 +21,9 @@
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
         map:layout_constraintVertical_bias="0.0"
+        map:cameraTargetLat="41.41698"
+        map:cameraTargetLng="-74.32525"
+        map:cameraZoom="9"
         tools:context="com.newburghmap.newburghmap.MapsActivity" />
 
     <LinearLayout

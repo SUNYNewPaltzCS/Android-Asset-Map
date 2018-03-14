@@ -125,47 +125,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            kml();
         }
 
         //commented out so that it is called by button
         // populateMapFromFusionTables();
 
-        startKml();
+
 
         //start with map at center of Newburgh, NY
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.5726, -74.1005), 10));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
     }
 
-    public void startKml() {
-        try {
-           // mMap = getMap();
-            //retrieveFileFromResource();
-            retrieveFileFromUrl();
-        } catch (Exception e) {
-            Log.e("Exception caught", e.toString());
-        }
-    }
-
-    private void retrieveFileFromResource() {
-        try {
-            KmlLayer kmllayer1 = new KmlLayer(mMap, R.raw.county, getApplicationContext());
-            // KmlLayer kmllayer2 = new KmlLayer(mMap, R.raw.orange, getApplicationContext());
-            kmllayer1.addLayerToMap();
-            // kmllayer2.addLayerToMap();
-            // moveCameraToKml(kmllayer2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //Home button method
     public void home(View v) {
         if (v.getId() == R.id.B_home) {
             //start with map at center of Newburgh, NY
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.5726, -74.1005), 10));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
         }
     }
 
@@ -173,6 +151,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onClick2(View v) {
         if (v.getId() == R.id.B_clear) {
             mMap.clear();
+            kml();
         }
     }
 
@@ -239,8 +218,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         currentLocationMarker = mMap.addMarker(markerOptions);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+       // mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
         if (client != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);
@@ -321,6 +300,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.i(TAG, (String) poi.get(0));
                         Log.i(TAG, "Lat " + poi.get(1));
                         Log.i(TAG, "Lon " + poi.get(2));
+
+
+
                         //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
                         // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
                         String name = (String) poi.get(0);
@@ -369,7 +351,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Sqlresponse sqlresponse = null;
 
             try {
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude FROM " + tableId);
+                String parenting = "parenting";
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name,latitude, longitude FROM " + tableId +" WHERE 'subtype' = '"+parenting+"'");
+                System.out.println("SELECT name,latitude, longitude FROM " + tableId +" WHERE type = "+ parenting);
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -379,32 +363,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private class DownloadKmlFile extends AsyncTask<String, Void, byte[]> {
-        private final String mUrl;
+//    private class DownloadKmlFile extends AsyncTask<String, Void, byte[]> {
+//        private final String mUrl;
+//
+//        public DownloadKmlFile(String url) {
+//            mUrl = url;
+//        }
+//
+//        protected byte[] doInBackground(String... params) {
+//            try {
+//                InputStream is = new URL(mUrl).openStream();
+//                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//                int nRead;
+//                byte[] data = new byte[16384];
+//                while ((nRead = is.read(data, 0, data.length)) != -1) {
+//                    buffer.write(data, 0, nRead);
+//                }
+//                buffer.flush();
+//                return buffer.toByteArray();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    }
 
-        public DownloadKmlFile(String url) {
-            mUrl = url;
+    // Adding KML Layer to get the outline of Organge County. Method is called @onMapReady()& onClick2()
+    public void kml(){
+        try {
+            KmlLayer kml = new KmlLayer(mMap,R.raw.orange_county,getApplicationContext());
+            kml.addLayerToMap();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        protected byte[] doInBackground(String... params) {
-            try {
-                InputStream is = new URL(mUrl).openStream();
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                int nRead;
-                byte[] data = new byte[16384];
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-                buffer.flush();
-                return buffer.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    private void retrieveFileFromUrl() {
-        new DownloadKmlFile(getString(R.string.map_url)).execute();
     }
 }
