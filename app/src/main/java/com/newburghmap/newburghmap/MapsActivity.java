@@ -351,7 +351,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Sqlresponse sqlresponse = null;
 
             try {
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name,latitude, longitude FROM " + tableId );
+                String parenting = "parenting";
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name,latitude, longitude FROM " + tableId +" WHERE 'subtype' = '"+parenting+"'");
+                System.out.println("SELECT name,latitude, longitude FROM " + tableId +" WHERE type = "+ parenting);
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
