@@ -33,9 +33,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -63,7 +65,7 @@ import java.util.concurrent.ExecutionException;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, OnMarkerClickListener  {
 
     private GoogleMap mMap;
     private GoogleApiClient client;
@@ -148,8 +150,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
-
         }
     }
 
@@ -169,47 +169,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            kml();
         }
 
         //commented out so that it is called by button
         // populateMapFromFusionTables();
 
-        startKml();
+
 
         //start with map at center of Newburgh, NY
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.5726, -74.1005), 10));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
     }
 
-    public void startKml() {
-        try {
-           // mMap = getMap();
-            //retrieveFileFromResource();
-            retrieveFileFromUrl();
-        } catch (Exception e) {
-            Log.e("Exception caught", e.toString());
-        }
-    }
-
-    private void retrieveFileFromResource() {
-        try {
-            KmlLayer kmllayer1 = new KmlLayer(mMap, R.raw.county, getApplicationContext());
-            // KmlLayer kmllayer2 = new KmlLayer(mMap, R.raw.orange, getApplicationContext());
-            kmllayer1.addLayerToMap();
-            // kmllayer2.addLayerToMap();
-            // moveCameraToKml(kmllayer2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //Home button method
     public void home(View v) {
         if (v.getId() == R.id.B_home) {
             //start with map at center of Newburgh, NY
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.5726, -74.1005), 10));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
         }
     }
 
@@ -217,6 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onClick2(View v) {
         if (v.getId() == R.id.B_clear) {
             mMap.clear();
+            kml();
         }
     }
 
@@ -281,7 +260,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         markerOptions.position(latLng);
         markerOptions.title("Current Location");
 
+        //add marker for current location
         currentLocationMarker = mMap.addMarker(markerOptions);
+
+        //add circle with 1/4 radius around current location
+        mMap.addCircle(new CircleOptions()
+                .center(latLng)
+                .radius(402.336)
+                .strokeColor(0xFAF0F8FF));
+
+        populateMapCurrentLocation(location);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
@@ -362,9 +350,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (mMap != null) {
 
                     for (List<Object> poi : rows) {
+                        /*DEBUG!
                         Log.i(TAG, (String) poi.get(0));
                         Log.i(TAG, "Lat " + poi.get(1));
                         Log.i(TAG, "Lon " + poi.get(2));
+                        */
+
                         //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
                         // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
                         String name = (String) poi.get(0);
@@ -373,7 +364,92 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         BigDecimal lon = (BigDecimal) poi.get(2);
                         LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
 
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.smeducation)));
+                        String group = (String) poi.get(3);
+
+                        switch(group) {
+                            case "education":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smeducation)));
+                                break;
+                            case "employment":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smemployment)));
+                                break;
+                            case "family":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfamily)));
+                                break;
+                            case "financial":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfinancial)));
+                                break;
+                            case "food":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfood)));
+                                break;
+                            case "health":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhealth)));
+                                break;
+                            case "housing":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhousing)));
+                                break;
+                            case "legal":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlegal)));
+                                break;
+                            case "lgbtq":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlgbtq)));
+                                break;
+                            case "transportation":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smtransportation)));
+                                break;
+                            case "veteran":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smvets)));
+                                break;
+                            default:
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name));
+                                //.snippet(description)
+                        }
                     }
 
                 } else {
@@ -386,6 +462,164 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 e.printStackTrace();
             }
         }
+    }
+
+    public void populateMapCurrentLocation(Location center) {
+
+        // TODO: to mak credentialsJSON work, you need to browse to https://console.developers.google.com/iam-admin/serviceaccounts/
+        // create a service account with role "project > service account actor" (generate key), download the json file
+        // rename it to service_account_credentials.json and place it under app/res/raw/
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+
+        try {
+            String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+            Sqlresponse result = null;
+
+            result = query(tableId);
+
+            List<List<Object>> rows = result.getRows();
+
+            Log.i(TAG, "Got " + rows.size() + " POIs from fusion tables.");
+
+            if (mMap != null) {
+
+                for (List<Object> poi : rows) {
+                    //DEBUG!
+                    // Log.i(TAG, (String) poi.get(0));
+                    // Log.i(TAG, "Lat " + poi.get(1));
+                    // Log.i(TAG, "Lon " + poi.get(2));
+
+                    //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
+                    // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
+                    String name = (String) poi.get(0);
+
+                    BigDecimal lat = (BigDecimal) poi.get(1);
+                    BigDecimal lon = (BigDecimal) poi.get(2);
+                    LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
+                    String group = (String) poi.get(3);
+
+                    //needed to know if point is within 1/4 mile of location
+                    Location test = new Location("");
+                    test.setLatitude(lat.doubleValue());
+                    test.setLongitude(lon.doubleValue());
+
+
+                    float distanceInMeters = center.distanceTo(test);
+                    if(distanceInMeters < 402.336 ){
+
+                        switch(group) {
+                            case "education":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smeducation)));
+                                break;
+                            case "employment":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smemployment)));
+                                break;
+                            case "family":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfamily)));
+                                break;
+                            case "financial":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfinancial)));
+                                break;
+                            case "food":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfood)));
+                                break;
+                            case "health":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhealth)));
+                                break;
+                            case "housing":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhousing)));
+                                break;
+                            case "legal":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlegal)));
+                                break;
+                            case "lgbtq":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlgbtq)));
+                                break;
+                            case "transportation":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smtransportation)));
+                                break;
+                            case "veteran":
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name)
+                                        //.snippet(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smvets)));
+                                break;
+                            default:
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title(name));
+                                //.snippet(description)
+                        }
+                    }
+                }
+            } else {
+                Log.i(TAG, "mMap is null, not placing markers.");
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //method to create snackbar with marker's info when marker is clicked.
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        return false;
     }
 
 
@@ -413,7 +647,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Sqlresponse sqlresponse = null;
 
             try {
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude FROM " + tableId);
+                String parenting = "parenting";
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group' FROM " + tableId +" WHERE 'subtype' = '"+parenting+"'");
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -423,32 +658,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private class DownloadKmlFile extends AsyncTask<String, Void, byte[]> {
-        private final String mUrl;
+//    private class DownloadKmlFile extends AsyncTask<String, Void, byte[]> {
+//        private final String mUrl;
+//
+//        public DownloadKmlFile(String url) {
+//            mUrl = url;
+//        }
+//
+//        protected byte[] doInBackground(String... params) {
+//            try {
+//                InputStream is = new URL(mUrl).openStream();
+//                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//                int nRead;
+//                byte[] data = new byte[16384];
+//                while ((nRead = is.read(data, 0, data.length)) != -1) {
+//                    buffer.write(data, 0, nRead);
+//                }
+//                buffer.flush();
+//                return buffer.toByteArray();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    }
 
-        public DownloadKmlFile(String url) {
-            mUrl = url;
+    // Adding KML Layer to get the outline of Orange County. Method is called @onMapReady()& onClick2()
+    public void kml(){
+        try {
+            KmlLayer kml = new KmlLayer(mMap,R.raw.orange_county,getApplicationContext());
+            kml.addLayerToMap();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        protected byte[] doInBackground(String... params) {
-            try {
-                InputStream is = new URL(mUrl).openStream();
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                int nRead;
-                byte[] data = new byte[16384];
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-                buffer.flush();
-                return buffer.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    private void retrieveFileFromUrl() {
-        new DownloadKmlFile(getString(R.string.map_url)).execute();
     }
 }
