@@ -647,8 +647,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Sqlresponse sqlresponse = null;
 
             try {
-                String parenting = "parenting";
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group' FROM " + tableId +" WHERE 'subtype' = '"+parenting+"'");
+                //String parenting = "parenting";
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group' FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
