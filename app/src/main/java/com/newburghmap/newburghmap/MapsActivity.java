@@ -1,6 +1,7 @@
 package com.newburghmap.newburghmap;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,10 +14,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.ActionBar;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,7 +60,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -63,6 +71,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+    Dialog myDialog;
+
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+
 
     // Google API client stuff
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
@@ -75,8 +89,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -86,6 +107,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        myDialog= new Dialog(this);
+    }
+
+    public void ShowPopup(View v){
+        TextView txtclose;
+        myDialog.setContentView(R.layout.custompopup);
+        txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
+        txtclose.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                myDialog.dismiss();
+            }
+        });
+        myDialog.show();
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
