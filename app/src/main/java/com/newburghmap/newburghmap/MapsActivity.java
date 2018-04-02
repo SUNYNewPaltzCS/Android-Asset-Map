@@ -338,6 +338,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();
 
             try {
+                /* Simons
+                * **********
+                **************TABLE ID*******************
+                 */
                 String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
                 Sqlresponse result = null;
 
