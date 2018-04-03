@@ -71,7 +71,7 @@ import java.util.concurrent.ExecutionException;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, OnMarkerClickListener  {
+        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener {
 
     private GoogleMap mMap;
     private GoogleApiClient client;
@@ -108,7 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         expandableList = (ExpandableListView) findViewById(R.id.navigationmenu);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -122,7 +122,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        myDialog= new Dialog(this);
+        myDialog = new Dialog(this);
 
         //Sub menu
         if (navigationView != null) {
@@ -275,12 +275,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void ShowPopup(View v){
+    public void ShowPopup(View v) {
         TextView txtclose;
         myDialog.setContentView(R.layout.custompopup);
         txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
-        txtclose.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 myDialog.dismiss();
             }
         });
@@ -292,15 +292,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(mToggle.onOptionsItemSelected(item)){
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
 
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
 
         navigationView.setNavigationItemSelectedListener(
@@ -313,27 +314,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_LOCATION_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //permission is granted
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        if (client == null) {
-                            buildGoogleApiClient();
-                        }
-                        mMap.setMyLocationEnabled(true);
-                    }
-                } else //permission denied
-                {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
-                }
-        }
-    }
-
 
     /**
      * Manipulates the map once available.
@@ -350,6 +330,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(this);
             kml();
         }
 
@@ -357,12 +338,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // populateMapFromFusionTables();
 
 
-
         //start with map at center of Newburgh, NY
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
     }
-
-
 
     //Home button method
     public void home(View v) {
@@ -429,31 +407,72 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_LOCATION_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permission is granted
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        if (client == null) {
+                            buildGoogleApiClient();
+                        }
+
+                        mMap.setMyLocationEnabled(true);
+                        mMap.setOnMyLocationButtonClickListener(this);
+
+                    }
+                } else //permission denied
+                {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
+                }
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+
+        try {
+            Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(client);
+
+            Log.d(TAG, "button clicked and got current location: lat: " + currentLocation.getLatitude() + ", lng: " + currentLocation.getLongitude());
+
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            markerOptions.title("Current Location");
+
+            //add marker for current location
+            currentLocationMarker = mMap.addMarker(markerOptions);
+
+            //add circle with 1/4 radius around current location
+            mMap.addCircle(new CircleOptions()
+                    .center(latLng)
+                    .radius(402.336)
+                    .strokeColor(0xFAF0F8FF));
+
+            populateMapCurrentLocation(currentLocation);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+
+        }catch(SecurityException e){
+            Log.e(TAG, "Security exception: " + e);
+        }
+
+        Toast.makeText(this, "Services within a 1/4 mile of your current location.", Toast.LENGTH_LONG).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
 
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
-
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Location");
-
-        //add marker for current location
-        currentLocationMarker = mMap.addMarker(markerOptions);
-
-        //add circle with 1/4 radius around current location
-        mMap.addCircle(new CircleOptions()
-                .center(latLng)
-                .radius(402.336)
-                .strokeColor(0xFAF0F8FF));
-
-        populateMapCurrentLocation(location);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
         if (client != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);
@@ -519,9 +538,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();
 
             try {
-                /* Simons
-                * **********
-                **************TABLE ID*******************
+                /********************************
+                * SIMONS TABLE ID
+                *********************************
                  */
                 String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
                 Sqlresponse result = null;
@@ -668,6 +687,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         try {
+            /********************************
+             * SIMONS TABLE ID
+             *********************************
+             */
             String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
             Sqlresponse result = null;
 
@@ -813,7 +836,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // It instantiates a GetTableTask class, calls execute, which calls doInBackground
         return new GetTableTask(fclient).execute(q).get();
     }
-
 
     protected class GetTableTask extends AsyncTask<String, Void, Sqlresponse> {
         Fusiontables fclient;
