@@ -358,6 +358,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    public void clearMap(){
+        mMap.clear();
+        kml();
+    }
+
     //Go! button method
     public void onClick(View v) {
 
@@ -430,6 +435,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMyLocationButtonClick() {
+
+        clearMap();
 
         try {
             Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(client);
