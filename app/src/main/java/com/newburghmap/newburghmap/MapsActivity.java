@@ -3,6 +3,7 @@ package com.newburghmap.newburghmap;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -274,16 +276,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void ShowBusRoute(View v) {
+
+        if (v.getId() == R.id.busroute) {
+            
+          
+
+        }
+    }
 
     public void ShowPopup(View v) {
         TextView txtclose;
         myDialog.setContentView(R.layout.custompopup);
+
         txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
         txtclose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myDialog.dismiss();
             }
         });
+
         myDialog.show();
     }
 
