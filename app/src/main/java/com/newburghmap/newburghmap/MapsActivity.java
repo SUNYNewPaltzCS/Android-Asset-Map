@@ -23,6 +23,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -81,7 +83,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+
     Dialog myDialog;
+
+    /********************************
+     * SIMONS TABLE ID
+     *********************************
+     */
+    final String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+
+    private ArrayList<String> places =  new ArrayList<>(600);
 
     private DrawerLayout mDrawerLayout;
     ExpandableListAdapter mMenuAdapter;
@@ -151,6 +162,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        autoCompleter();
+        AutoCompleteTextView teView = findViewById(R.id.autoComp);
+        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
+        teView.setAdapter(adapt);
     }
 
     private void prepareListData() {
@@ -381,38 +396,58 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //if user clicked on search button
         if (v.getId() == R.id.B_search) {
             //get what user typed in search box
-            EditText tf_location = findViewById(R.id.TF_location);
+            EditText tf_location = findViewById(R.id.autoComp);
             //then convert to string
             String location = tf_location.getText().toString();
 
-            List<Address> addressList = null;
-            MarkerOptions mo = new MarkerOptions();
-
-            //check if user actually entered something or not
-            if (!location.equals("")) {
-                // will return list of addresses that are known to describe the current location (set max num of results to 5)
-                //this will have to be modified to only return results from fusion table
-                Geocoder geocoder = new Geocoder(this);
-                try {
-                    addressList = geocoder.getFromLocationName(location, 5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //put markers of returned locations
-                for (int i = 0; i < addressList.size(); i++) {
-                    Address myAddress = addressList.get(i); //get address
-                    LatLng latLng = new LatLng(myAddress.getLatitude(), myAddress.getLongitude()); //create latLang for it
-                    mo.position(latLng); //pass position to marker, could set the title and icon here too
-                    mMap.addMarker(mo); //add marker to map
-
-                    //you can leave it like this, or have camera move to last result.
-                    //we will move it to the last result
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                }
+            InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+            try {
+                credential = GoogleCredential
+                        .fromStream(credentialsJSON, transport, jsonFactory)
+                        .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            fclient = new Fusiontables.Builder(
+                    transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                    .build();
+
+            try {
+
+                Sqlresponse result;
+                result = query(tableId);
+                List<List<Object>> rows = result.getRows();
+
+                for (List<Object> poi : rows) {
+                    String name = (String) poi.get(0);
+                    if( location.equalsIgnoreCase(name)){
+                        BigDecimal lat = (BigDecimal) poi.get(1);
+                        BigDecimal lon = (BigDecimal) poi.get(2);
+                        LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
+                        String group = (String) poi.get(3);
+
+                        clearMap();
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(name)
+                                //.snippet(description)
+                                .icon(iconRetrieve(group)));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                        break;
+                    }
+                }
+
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
+
 
     protected synchronized void buildGoogleApiClient() {
         client = new GoogleApiClient.Builder(this)
@@ -536,6 +571,74 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void autoCompleter() {
+
+
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+
+        try {
+
+            Sqlresponse result = null;
+
+            result = query(tableId);
+            List<List<Object>> rows = result.getRows();
+
+            places.clear();
+            for (List<Object> poi : rows) {
+                String name = (String) poi.get(0);
+                places.add(name);
+            }
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public com.google.android.gms.maps.model.BitmapDescriptor iconRetrieve(String group ){
+        switch(group) {
+            case "education":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smeducation);
+            case "employment":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smemployment);
+            case "family":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smfamily);
+            case "financial":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smfinancial);
+            case "food":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smfood);
+            case "health":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smhealth);
+            case "housing":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smhousing);
+            case "legal":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smlegal);
+            case "lgbtq":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smlgbtq);
+            case "transportation":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smtransportation);
+            case "veteran":
+                return BitmapDescriptorFactory.fromResource(R.drawable.smvets);
+            default:
+                return null;
+        }
+    }
+
     //copy and pasted from github repo!!
     public void populateMapFromFusionTables(View v) {
 
@@ -557,11 +660,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();
 
             try {
-                /********************************
-                * SIMONS TABLE ID
-                *********************************
-                 */
-                String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+
                 Sqlresponse result = null;
 
                 result = query(tableId);
@@ -589,90 +688,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         String group = (String) poi.get(3);
 
-                        switch(group) {
-                            case "education":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smeducation)));
-                                break;
-                            case "employment":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smemployment)));
-                                break;
-                            case "family":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfamily)));
-                                break;
-                            case "financial":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfinancial)));
-                                break;
-                            case "food":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfood)));
-                                break;
-                            case "health":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhealth)));
-                                break;
-                            case "housing":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhousing)));
-                                break;
-                            case "legal":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlegal)));
-                                break;
-                            case "lgbtq":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlgbtq)));
-                                break;
-                            case "transportation":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smtransportation)));
-                                break;
-                            case "veteran":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smvets)));
-                                break;
-                            default:
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(name)
                                 //.snippet(description)
-                        }
+                                .icon(iconRetrieve(group)));
                     }
 
                 } else {
@@ -706,11 +726,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         try {
-            /********************************
-             * SIMONS TABLE ID
-             *********************************
-             */
-            String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+
             Sqlresponse result = null;
 
             result = query(tableId);
@@ -745,90 +761,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     float distanceInMeters = center.distanceTo(test);
                     if(distanceInMeters < 402.336 ){
 
-                        switch(group) {
-                            case "education":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smeducation)));
-                                break;
-                            case "employment":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smemployment)));
-                                break;
-                            case "family":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfamily)));
-                                break;
-                            case "financial":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfinancial)));
-                                break;
-                            case "food":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smfood)));
-                                break;
-                            case "health":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhealth)));
-                                break;
-                            case "housing":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smhousing)));
-                                break;
-                            case "legal":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlegal)));
-                                break;
-                            case "lgbtq":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smlgbtq)));
-                                break;
-                            case "transportation":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smtransportation)));
-                                break;
-                            case "veteran":
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name)
-                                        //.snippet(description)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.smvets)));
-                                break;
-                            default:
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(latLng)
-                                        .title(name));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(name)
                                 //.snippet(description)
-                        }
+                                .icon(iconRetrieve(group)));
                     }
                 }
             } else {

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\Brandon\Desktop\BCMap\BC-master\.idea\BC.iml" filepath="C:\Users\Brandon\Desktop\BCMap\BC-master\.idea\BC.iml" />
-      <module fileurl="file://C:\Users\Brandon\Desktop\BCMap\BC-master\BC-NewBurghAndroidMap.iml" filepath="C:\Users\Brandon\Desktop\BCMap\BC-master\BC-NewBurghAndroidMap.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BC-master.iml" filepath="$PROJECT_DIR$/BC-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BC.iml" filepath="$PROJECT_DIR$/BC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
