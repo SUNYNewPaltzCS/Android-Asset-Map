@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/nav_education"
+          android:title="Education"
+          android:icon="@drawable/education"/>
+
+    <item android:id="@+id/nav_health"
+        android:icon="@drawable/healthon"
+          android:title="Health" />
+
+    <item android:id="@+id/nav_food"
+        android:icon="@drawable/food"
+          android:title="food" />
+
+    <item android:id="@+id/nav_test"
+        
+          android:title="test333" />
+</menu>

@@ -117,7 +117,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setItemIconTintList(null);
+
+
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -133,14 +136,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         myDialog = new Dialog(this);
-
     }
+
 
     public void ShowBusRoute(View v) {
 
         if (v.getId() == R.id.busroute) {
             
-          
+
 
         }
     }
@@ -418,7 +421,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        locationRequest = new LocationRequest();
+       // locationRequest = new LocationRequest();
 
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(1000);
