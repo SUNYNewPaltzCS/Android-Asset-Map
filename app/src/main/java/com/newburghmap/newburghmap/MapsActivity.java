@@ -16,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -95,11 +96,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<String> places =  new ArrayList<>(600);
 
     private DrawerLayout mDrawerLayout;
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<ExpandedMenuModel> listDataHeader;
-    HashMap<ExpandedMenuModel, List<String>> listDataChild;
-
     private ActionBarDrawerToggle mToggle;
 
 
@@ -119,8 +115,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        expandableList = (ExpandableListView) findViewById(R.id.navigationmenu);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -136,158 +133,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         myDialog = new Dialog(this);
-
-        //Sub menu
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
-
-        prepareListData();
-        mMenuAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, expandableList);
-
-        // setting list adapter
-        expandableList.setAdapter(mMenuAdapter);
-
-        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                //Log.d("DEBUG", "submenu item clicked");
-                return false;
-            }
-        });
-        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                //Log.d("DEBUG", "heading clicked");
-                return false;
-            }
-        });
-        autoCompleter();
-        AutoCompleteTextView teView = findViewById(R.id.autoComp);
-        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
-        teView.setAdapter(adapt);
-    }
-
-    private void prepareListData() {
-        listDataHeader = new ArrayList<ExpandedMenuModel>();
-        listDataChild = new HashMap<ExpandedMenuModel, List<String>>();
-
-        ExpandedMenuModel item1 = new ExpandedMenuModel();
-        item1.setIconName("Health");
-        // Adding data header
-        listDataHeader.add(item1);
-
-        ExpandedMenuModel item2 = new ExpandedMenuModel();
-        item2.setIconName("Food");
-        listDataHeader.add(item2);
-
-        ExpandedMenuModel item3 = new ExpandedMenuModel();
-        item3.setIconName("Housing");
-        listDataHeader.add(item3);
-
-        ExpandedMenuModel item4 = new ExpandedMenuModel();
-        item4.setIconName("Employment");
-        listDataHeader.add(item4);
-
-        ExpandedMenuModel item5 = new ExpandedMenuModel();
-        item5.setIconName("Childcare");
-        listDataHeader.add(item5);
-
-        ExpandedMenuModel item6 = new ExpandedMenuModel();
-        item6.setIconName("Financial");
-        listDataHeader.add(item6);
-
-        ExpandedMenuModel item7 = new ExpandedMenuModel();
-        item7.setIconName("Lgbtq");
-        listDataHeader.add(item7);
-
-        ExpandedMenuModel item8 = new ExpandedMenuModel();
-        item8.setIconName("Legal");
-        listDataHeader.add(item8);
-
-        ExpandedMenuModel item9 = new ExpandedMenuModel();
-        item9.setIconName("Vets");
-        listDataHeader.add(item9);
-
-        ExpandedMenuModel item10 = new ExpandedMenuModel();
-        item10.setIconName("Transportation");
-        listDataHeader.add(item10);
-
-        ExpandedMenuModel item11 = new ExpandedMenuModel();
-        item11.setIconName("Education");
-        listDataHeader.add(item11);
-
-
-        // Adding child data
-        List<String> Health = new ArrayList<String>();
-        Health.add("Addiction");
-        Health.add("Counseling");
-        Health.add("Services");
-        Health.add("Mental");
-
-        List<String> Food = new ArrayList<String>();
-        Food.add("a");
-        Food.add("b");
-        Food.add("c");
-
-        List<String> Housing = new ArrayList<String>();
-        Housing.add("a");
-        Housing.add("b");
-        Housing.add("c");
-
-        List<String> Employment = new ArrayList<String>();
-        Employment.add("a");
-        Employment.add("b");
-        Employment.add("c");
-
-        List<String> Childcare = new ArrayList<String>();
-        Childcare.add("a");
-        Childcare.add("b");
-        Childcare.add("c");
-
-        List<String> Financial = new ArrayList<String>();
-        Financial.add("a");
-        Financial.add("b");
-        Financial.add("c");
-
-        List<String> Lgbtq = new ArrayList<String>();
-        Lgbtq.add("a");
-        Lgbtq.add("b");
-        Lgbtq.add("c");
-
-        List<String> Vets = new ArrayList<String>();
-        Vets.add("a");
-        Vets.add("b");
-        Vets.add("c");
-
-        List<String> Legal = new ArrayList<String>();
-        Legal.add("a");
-        Legal.add("b");
-        Legal.add("c");
-
-        List<String> Transportation = new ArrayList<String>();
-        Transportation.add("a");
-        Transportation.add("b");
-        Transportation.add("c");
-
-        List<String> Education = new ArrayList<String>();
-        Education.add("a");
-        Education.add("b");
-        Education.add("c");
-
-        // Header, Child data
-
-        listDataChild.put(listDataHeader.get(0), Health);
-        listDataChild.put(listDataHeader.get(1), Food);
-        listDataChild.put(listDataHeader.get(2), Housing);
-        listDataChild.put(listDataHeader.get(3), Employment);
-        listDataChild.put(listDataHeader.get(4), Childcare);
-        listDataChild.put(listDataHeader.get(5), Financial);
-        listDataChild.put(listDataHeader.get(6), Lgbtq);
-        listDataChild.put(listDataHeader.get(7), Legal);
-        listDataChild.put(listDataHeader.get(8), Vets);
-        listDataChild.put(listDataHeader.get(9), Transportation);
-        listDataChild.put(listDataHeader.get(10), Education);
 
     }
 
@@ -329,18 +174,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    @SuppressWarnings("StatementWithEmptyBody")
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
+
+        if (id == R.id.nav_childare) {
+            // Handle the camera action
+        } else if (id == R.id.nav_education) {
+
+        } else if (id == R.id.nav_employment) {
+
+        } else if (id == R.id.nav_family) {
+
+        } else if (id == R.id.nav_financial) {
+
+        } else if (id == R.id.nav_food) {
+
+        } else if (id == R.id.nav_health) {
+
+        } else if (id == R.id.nav_housing) {
+
+        } else if (id == R.id.nav_legal) {
+
+        } else if (id == R.id.nav_lgbtq) {
+
+        }
+        else if (id == R.id.nav_transportation) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
+
+
 
     /**
      * Manipulates the map once available.

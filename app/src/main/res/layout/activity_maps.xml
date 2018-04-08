@@ -130,16 +130,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#fff"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/navigation_header">
-
-        <ExpandableListView
-            android:id="@+id/navigationmenu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="192dp"
-            android:background="@android:color/white">
-        </ExpandableListView>
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/activity_main_drawer" >
 
     </android.support.design.widget.NavigationView>
 

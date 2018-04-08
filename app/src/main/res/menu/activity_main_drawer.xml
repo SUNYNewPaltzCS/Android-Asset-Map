@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_transportation"
+            android:icon="@drawable/smtransportation"
+            android:title="Transportation" />
+        <item
+            android:id="@+id/nav_childare"
+            android:icon="@drawable/smchildcare"
+            android:title="Childare" />
+        <item
+            android:id="@+id/nav_education"
+            android:icon="@drawable/smeducation"
+            android:title="Education" />
+        <item
+            android:id="@+id/nav_employment"
+            android:icon="@drawable/smemployment"
+            android:title="Employment" />
+        <item
+            android:id="@+id/nav_family"
+            android:icon="@drawable/smfamily"
+            android:title="Family" />
+        <item
+            android:id="@+id/nav_financial"
+            android:icon="@drawable/smfinancial"
+            android:title="Financial" />
+        <item
+            android:id="@+id/nav_food"
+            android:icon="@drawable/smfood"
+            android:title="Food" />
+        <item
+            android:id="@+id/nav_health"
+            android:icon="@drawable/smhealth"
+            android:title="Health" />
+        <item
+            android:id="@+id/nav_housing"
+            android:icon="@drawable/smhousing"
+            android:title="Housing" />
+        <item
+            android:id="@+id/nav_legal"
+            android:icon="@drawable/smlegal"
+            android:title="Legal" />
+        <item
+            android:id="@+id/nav_lgbtq"
+            android:icon="@drawable/smlgbtq"
+            android:title="Lgbtq" />
+    </group>
+
+</menu>
