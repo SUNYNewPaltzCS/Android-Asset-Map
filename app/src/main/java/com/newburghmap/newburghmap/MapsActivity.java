@@ -137,10 +137,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         myDialog = new Dialog(this);
         
-                autoCompleter();
-                AutoCompleteTextView teView = findViewById(R.id.autoComp);
-                ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
-                teView.setAdapter(adapt);
+        autoCompleter();
+        AutoCompleteTextView teView = findViewById(R.id.autoComp);
+        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
+        teView.setAdapter(adapt);
     }
 
 
@@ -426,7 +426,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-       // locationRequest = new LocationRequest();
+        locationRequest = new LocationRequest();
 
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(1000);
