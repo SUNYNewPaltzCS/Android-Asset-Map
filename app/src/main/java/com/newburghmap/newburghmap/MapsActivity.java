@@ -136,6 +136,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         myDialog = new Dialog(this);
+        
+                autoCompleter();
+                AutoCompleteTextView teView = findViewById(R.id.autoComp);
+                ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
+                teView.setAdapter(adapt);
     }
 
 
