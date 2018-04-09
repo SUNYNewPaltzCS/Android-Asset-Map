@@ -142,6 +142,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         myDialog = new Dialog(this);
 
+
         //get header of nav
         View header = navigationView.getHeaderView(0);
         //get menu of nav
@@ -200,6 +201,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
         
         autoCompleter();
         AutoCompleteTextView teView = findViewById(R.id.autoComp);
