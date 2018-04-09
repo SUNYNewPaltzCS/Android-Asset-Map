@@ -5,13 +5,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_transportation"
-            android:icon="@drawable/smtransportation"
-            android:title="Transportation" />
-        <item
-            android:id="@+id/nav_childare"
+            android:id="@+id/nav_childcare"
             android:icon="@drawable/smchildcare"
-            android:title="Childare" />
+            android:title="Childcare" />
         <item
             android:id="@+id/nav_education"
             android:icon="@drawable/smeducation"
@@ -48,6 +44,14 @@
             android:id="@+id/nav_lgbtq"
             android:icon="@drawable/smlgbtq"
             android:title="Lgbtq" />
+        <item
+            android:id="@+id/nav_transportation"
+            android:icon="@drawable/smtransportation"
+            android:title="Transportation" />
+        <item
+            android:id="@+id/nav_veteran"
+            android:icon="@drawable/smvets"
+            android:title="Veteran" />
     </group>
 
 </menu>

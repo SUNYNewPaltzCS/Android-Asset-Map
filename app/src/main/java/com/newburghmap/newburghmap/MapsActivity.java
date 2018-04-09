@@ -27,10 +27,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.support.v7.app.ActionBar;
 import android.widget.Toolbar;
 
@@ -98,6 +100,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
+    //language toggle
+    private ToggleButton langToggle;
+    private Boolean spanish = false;
+
 
     // Google API client stuff
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
@@ -120,7 +126,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         navigationView.setItemIconTintList(null);
 
-
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -136,11 +141,71 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         myDialog = new Dialog(this);
+
+        //get header of nav
+        View header = navigationView.getHeaderView(0);
+        //get menu of nav
+        Menu menu = navigationView.getMenu();
+        //get menu items
+        final MenuItem nav_childcare = menu.findItem(R.id.nav_childcare);
+        final MenuItem nav_education = menu.findItem(R.id.nav_education);
+        final MenuItem nav_employment = menu.findItem(R.id.nav_employment);
+        final MenuItem nav_family = menu.findItem(R.id.nav_family);
+        final MenuItem nav_financial = menu.findItem(R.id.nav_financial);
+        final MenuItem nav_food = menu.findItem(R.id.nav_food);
+        final MenuItem nav_health = menu.findItem(R.id.nav_health);
+        final MenuItem nav_housing = menu.findItem(R.id.nav_housing);
+        final MenuItem nav_legal = menu.findItem(R.id.nav_legal);
+        final MenuItem nav_lgbtq = menu.findItem(R.id.nav_lgbtq);
+        final MenuItem nav_transportation = menu.findItem(R.id.nav_transportation);
+        final MenuItem nav_veteran = menu.findItem(R.id.nav_veteran);
+
+        //Language Toggle
+        langToggle = (ToggleButton) header.findViewById(R.id.langToggle);
+        langToggle.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(langToggle.isChecked())
+                {
+                    spanish = true;
+
+                    nav_childcare.setTitle("Cuidado de niños");
+                    nav_education.setTitle("Educación");
+                    nav_employment.setTitle("Empleo");
+                    nav_family.setTitle("Familia");
+                    nav_financial.setTitle("Financiero");
+                    nav_food.setTitle("Comida");
+                    nav_health.setTitle("Salud");
+                    nav_housing.setTitle("Alojamiento");
+                    nav_transportation.setTitle("Transporte");
+                    nav_veteran.setTitle("Veterano");
+
+                } else {
+                    // The toggle is disabled
+                    spanish = false;
+
+                    nav_childcare.setTitle("Childcare");
+                    nav_education.setTitle("Education");
+                    nav_employment.setTitle("Employment");
+                    nav_family.setTitle("Family");
+                    nav_financial.setTitle("Financial");
+                    nav_food.setTitle("Food");
+                    nav_health.setTitle("Health");
+                    nav_housing.setTitle("Housing");
+                    nav_transportation.setTitle("Transportation");
+                    nav_veteran.setTitle("Veteran");
+
+                }
+            }
+        });
         
         autoCompleter();
         AutoCompleteTextView teView = findViewById(R.id.autoComp);
         ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
         teView.setAdapter(adapt);
+
     }
 
 
@@ -188,7 +253,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_childare) {
+        if (id == R.id.nav_childcare) {
             // Handle the camera action
         } else if (id == R.id.nav_education) {
 
@@ -249,7 +314,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Home button method
     public void home(View v) {
-        if (v.getId() == R.id.B_home) {
+        if (v.getId() == R.id.B_home || v.getId() == R.id.refresh) {
+            clearMap();
             //start with map at center of Newburgh, NY
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
         }
@@ -558,7 +624,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
                         // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
-                        String name = (String) poi.get(0);
+                        String name  = (String) poi.get(0);
 
                         BigDecimal lat = (BigDecimal) poi.get(1);
                         BigDecimal lon = (BigDecimal) poi.get(2);
@@ -566,10 +632,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         String group = (String) poi.get(3);
 
+                        String description;
+                        //english
+                        if(!spanish){
+                            description = (String) poi.get(4);
+                        }
+                        //spanish
+                        else{
+                            description = (String) poi.get(5);
+                        }
+
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title(name)
-                                //.snippet(description)
+                                .snippet(description)
                                 .icon(iconRetrieve(group)));
                     }
 
@@ -689,7 +765,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             try {
                 //String parenting = "parenting";
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group' FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group', description, DesctriptionES FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
