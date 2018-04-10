@@ -2,6 +2,7 @@ package com.newburghmap.newburghmap;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -45,12 +47,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.StreetViewPanoramaLocation;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -78,7 +84,7 @@ import java.util.concurrent.ExecutionException;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener {
+        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback {
 
     private GoogleMap mMap;
     private GoogleApiClient client;
@@ -86,7 +92,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
-
+    public static LatLng latilngi;
+    int busClick = 0;
+    KmlLayer kml;
     Dialog myDialog;
 
     /********************************
@@ -141,6 +149,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.custompopup);
+
 
         //get header of nav
         View header = navigationView.getHeaderView(0);
@@ -200,6 +210,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
         
         autoCompleter();
         AutoCompleteTextView teView = findViewById(R.id.autoComp);
@@ -209,27 +220,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void ShowBusRoute(View v) {
-
-        if (v.getId() == R.id.busroute) {
-            
-
-
+    public void ShowBusRoute(View v){
+        if(busClick==0){
+            try {
+                kml = new KmlLayer(mMap,R.raw.finalroutesbuses,getApplicationContext());
+                kml.addLayerToMap();
+                busClick++;
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            kml.removeLayerFromMap();
+            busClick--;
         }
     }
 
-    public void ShowPopup(View v) {
+    //This opens the custompopup.xml with the streetview and other info about the marker.
+    public void InfoWindow(View v) {
         TextView txtclose;
-        myDialog.setContentView(R.layout.custompopup);
+        final StreetViewPanoramaFragment streetViewPanoramaFragment =
+                (StreetViewPanoramaFragment) getFragmentManager()
+                        .findFragmentById(R.id.streetviewpanorama);
+        streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
         txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
-        txtclose.setOnClickListener(new View.OnClickListener() {
+        myDialog.show();
+        txtclose.setOnClickListener(new View.OnClickListener()
+        {
             public void onClick(View v) {
-                myDialog.dismiss();
+                myDialog.hide();
             }
         });
 
-        myDialog.show();
     }
 
     @Override
@@ -241,9 +265,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -251,7 +273,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
 
         if (id == R.id.nav_childcare) {
             // Handle the camera action
@@ -296,17 +317,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
             kml();
         }
+        mMap.setOnMarkerClickListener(this);
 
         //commented out so that it is called by button
         // populateMapFromFusionTables();
-
 
         //start with map at center of Newburgh, NY
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
@@ -324,8 +344,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Clear Map button method
     public void onClick2(View v) {
         if (v.getId() == R.id.B_clear) {
-            mMap.clear();
-            kml();
+            clearMap();
         }
     }
 
@@ -501,8 +520,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(client, locationRequest, this);
         }
-
-
     }
 
     @Override
@@ -543,15 +560,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String name = (String) poi.get(0);
                 places.add(name);
             }
-
-
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public com.google.android.gms.maps.model.BitmapDescriptor iconRetrieve(String group ){
@@ -736,7 +749,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //method to create snackbar with marker's info when marker is clicked.
     @Override
     public boolean onMarkerClick(Marker marker) {
-
+        latilngi = marker.getPosition();
+        InfoWindow(findViewById(R.id.streetviewpanorama));
         return false;
     }
 
@@ -745,6 +759,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Inspired from: https://github.com/digitalheir/fusion-tables-android/blob/master/src/com/google/fusiontables/ftclient/FtClient.java
         // It instantiates a GetTableTask class, calls execute, which calls doInBackground
         return new GetTableTask(fclient).execute(q).get();
+    }
+
+    //This opens the custompopup.xml with the streetview of the marker.Checks if there is a street view it displays it else ...
+    @Override
+    public void onStreetViewPanoramaReady(final StreetViewPanorama streetViewPanorama) {
+        streetViewPanorama.setPosition(new LatLng(latilngi.latitude,latilngi.longitude));
+
+        streetViewPanorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
+            @Override
+            public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
+                if (streetViewPanoramaLocation != null && streetViewPanoramaLocation.links != null) {
+                    streetViewPanorama.setPosition(new LatLng(latilngi.latitude,latilngi.longitude));
+                } else {
+                    // location not available
+
+                }
+            }
+        });
+
     }
 
     protected class GetTableTask extends AsyncTask<String, Void, Sqlresponse> {
@@ -756,13 +789,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         @Override
         protected Sqlresponse doInBackground(String... params) {
-
             String tableId = params[0];
-
             Log.i(TAG, "doInBackground table id: " + tableId);
-
             Sqlresponse sqlresponse = null;
-
             try {
                 //String parenting = "parenting";
                 Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group', description, DesctriptionES FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
@@ -770,37 +799,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return sqlresponse;
         }
     }
 
-//    private class DownloadKmlFile extends AsyncTask<String, Void, byte[]> {
-//        private final String mUrl;
-//
-//        public DownloadKmlFile(String url) {
-//            mUrl = url;
-//        }
-//
-//        protected byte[] doInBackground(String... params) {
-//            try {
-//                InputStream is = new URL(mUrl).openStream();
-//                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//                int nRead;
-//                byte[] data = new byte[16384];
-//                while ((nRead = is.read(data, 0, data.length)) != -1) {
-//                    buffer.write(data, 0, nRead);
-//                }
-//                buffer.flush();
-//                return buffer.toByteArray();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//    }
-
-    // Adding KML Layer to get the outline of Orange County. Method is called @onMapReady()& onClick2()
+    // Adding KML Layer to get the outline of Orange County. Method is called @onMapReady().
     public void kml(){
         try {
             KmlLayer kml = new KmlLayer(mMap,R.raw.orange_county,getApplicationContext());

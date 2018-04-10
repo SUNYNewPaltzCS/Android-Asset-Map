@@ -39,6 +39,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="64dp"
+            android:onClick="ShowBusRoute"
 
             android:background="@drawable/bus"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,21 +47,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/popup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginStart="8dp"
-            android:onClick="ShowPopup"
-            android:text="popup"
-            app:layout_constraintBottom_toTopOf="@+id/B_home"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
+
 
         <Button
             android:id="@+id/B_populate"
