@@ -1,13 +1,14 @@
 package com.newburghmap.newburghmap;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-<<<<<<< Updated upstream
-import android.app.Fragment;
-=======
+
+//import android.app.Fragment;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
->>>>>>> Stashed changes
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -80,12 +81,12 @@ import java.util.concurrent.ExecutionException;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-<<<<<<< Updated upstream
-        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback {
-=======
-        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener,
+
+        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback ,
+
+
         NavigationView.OnNavigationItemSelectedListener{
->>>>>>> Stashed changes
+
 
     private GoogleMap mMap;
     private GoogleApiClient client;
@@ -230,19 +231,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
 
-//        int id = item.getItemId();
-//        if (id == R.id.nav_childcare) {
-//
-//            Childcare_fragment childcare_fragment = new Childcare_fragment();
-//            FragmentManager manager = getSupportFragmentManager();
-//            manager.beginTransaction().replace(R.id.frameLayout,childcare_fragment).commit();
-//
-//        } else if (id == R.id.nav_education) {
-//        }
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-//        drawer.closeDrawer(GravityCompat.START);
 
         displayView(item.getItemId());
         return true;
@@ -298,16 +287,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< Updated upstream
-    @SuppressWarnings("StatementWithEmptyBody")
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_childcare) {
-            // Handle the camera action
-        } else if (id == R.id.nav_education) {
-=======
     public void displayView(int viewId) {
 
         Fragment fragment = null;
@@ -318,7 +297,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 fragment = new Childcare_fragment();
                 title  = "Childcare";
                 viewIsAtHome = false;
->>>>>>> Stashed changes
+
 
                 break;
             case R.id.nav_education:
@@ -566,6 +545,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return false;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
