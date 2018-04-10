@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
+    android:background="@android:color/holo_blue_dark"
+    android:padding="5dp">
 
-    android:background="@color/colorPrimaryDark"
-    android:padding="5dp"
-
-    >
+    <fragment
+        android:id="@+id/streetviewpanorama"
+        android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/txtclose"
@@ -19,16 +20,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/circleoutline"
         android:gravity="center"
-        android:text="X"
+        android:text="@string/X"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold" />
 
 </RelativeLayout>
+
