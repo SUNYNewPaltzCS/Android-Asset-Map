@@ -177,6 +177,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
+                clearMap();
+
                 if(langToggle.isChecked())
                 {
                     spanish = true;
