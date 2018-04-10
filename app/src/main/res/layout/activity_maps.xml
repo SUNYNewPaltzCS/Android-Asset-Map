@@ -6,6 +6,8 @@
     android:layout_height="match_parent">
 
 
+
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,6 +27,8 @@
         map:cameraTargetLng="-74.32525"
         map:cameraZoom="9"
         tools:context="com.newburghmap.newburghmap.MapsActivity" />
+
+
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -108,9 +112,14 @@
             android:layout_marginTop="16dp"
             android:hint="Search by Name"
             app:layout_constraintEnd_toStartOf="@+id/B_search"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+
+            />
 
     </android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/content_main" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -124,6 +133,7 @@
 
 
     </android.support.design.widget.NavigationView>
+
 
 
 </android.support.v4.widget.DrawerLayout>

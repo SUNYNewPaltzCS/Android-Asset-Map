@@ -2,11 +2,13 @@ package com.newburghmap.newburghmap;
 
 import android.Manifest;
 import android.app.Dialog;
+<<<<<<< Updated upstream
 import android.app.Fragment;
+=======
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+>>>>>>> Stashed changes
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,7 +18,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+
+
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,15 +32,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.support.v7.app.ActionBar;
-import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,14 +68,11 @@ import com.google.maps.android.data.kml.KmlLayer;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -84,13 +80,19 @@ import java.util.concurrent.ExecutionException;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+<<<<<<< Updated upstream
         LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback {
+=======
+        LocationListener, OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener,
+        NavigationView.OnNavigationItemSelectedListener{
+>>>>>>> Stashed changes
 
     private GoogleMap mMap;
     private GoogleApiClient client;
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker currentLocationMarker;
+    private boolean viewIsAtHome;
     public static final int REQUEST_LOCATION_CODE = 99;
     public static LatLng latilngi;
     int busClick = 0;
@@ -130,9 +132,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mDrawerLayout =  findViewById(R.id.drawerLayout);
 
-        NavigationView navigationView =  findViewById(R.id.nav_view);
-
+        NavigationView navigationView =  (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -213,12 +216,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        
+
+
+
         autoCompleter();
         AutoCompleteTextView teView = findViewById(R.id.autoComp);
         ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
         teView.setAdapter(adapt);
 
+        displayView(R.id.map);
+
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+
+//        int id = item.getItemId();
+//        if (id == R.id.nav_childcare) {
+//
+//            Childcare_fragment childcare_fragment = new Childcare_fragment();
+//            FragmentManager manager = getSupportFragmentManager();
+//            manager.beginTransaction().replace(R.id.frameLayout,childcare_fragment).commit();
+//
+//        } else if (id == R.id.nav_education) {
+//        }
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+//        drawer.closeDrawer(GravityCompat.START);
+
+        displayView(item.getItemId());
+        return true;
     }
 
 
@@ -271,6 +298,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+<<<<<<< Updated upstream
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -279,31 +307,58 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (id == R.id.nav_childcare) {
             // Handle the camera action
         } else if (id == R.id.nav_education) {
+=======
+    public void displayView(int viewId) {
 
-        } else if (id == R.id.nav_employment) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+        viewIsAtHome = true;
+        switch (viewId) {
+            case R.id.nav_childcare:
+                fragment = new Childcare_fragment();
+                title  = "Childcare";
+                viewIsAtHome = false;
+>>>>>>> Stashed changes
 
-        } else if (id == R.id.nav_family) {
-
-        } else if (id == R.id.nav_financial) {
-
-        } else if (id == R.id.nav_food) {
-
-        } else if (id == R.id.nav_health) {
-
-        } else if (id == R.id.nav_housing) {
-
-        } else if (id == R.id.nav_legal) {
-
-        } else if (id == R.id.nav_lgbtq) {
+                break;
+            case R.id.nav_education:
+                fragment = new education_fragment();
+                title = "Education";
+                viewIsAtHome = false;
+                break;
 
         }
-        else if (id == R.id.nav_transportation) {
 
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragmentFrame, fragment);
+            ft.commit();
+        }
+
+        // set the toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        if (!viewIsAtHome) { //if the current view is not the News fragment
+            displayView(R.id.nav_view); //display the News fragment
+        } else {
+            moveTaskToBack(true);  //If view is in News fragment, exit application
+        }
+
     }
 
 
