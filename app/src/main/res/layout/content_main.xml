@@ -7,15 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="81dp"
-    tools:showIn="@layout/activity_maps"  >
-
+    tools:showIn="@layout/activity_maps">
 
 
     <FrameLayout
 
         android:id="@+id/fragmentFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="271dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
 
