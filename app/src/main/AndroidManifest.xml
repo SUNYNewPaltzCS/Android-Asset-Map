@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.newburghmap.newburghmap">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -15,10 +16,9 @@
 
     <permission
         android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"/>
+        android:protectionLevel="signature" />
 
-
+    <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE" />
 
     <!-- added for Google Play? -->
     <uses-feature
@@ -32,6 +32,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -53,7 +54,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <uses-library android:name="com.google.android.maps" />
+
+        <activity
+            android:name=".sub_education_activity"
+            android:label="@string/title_activity_sub_education_activity" />
     </application>
 
 </manifest>
