@@ -174,6 +174,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final MenuItem nav_transportation = menu.findItem(R.id.nav_transportation);
         final MenuItem nav_veteran = menu.findItem(R.id.nav_veteran);
 
+
+
         //Language Toggle
         langToggle = (ToggleButton) header.findViewById(R.id.langToggle);
         langToggle.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +227,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, places);
         teView.setAdapter(adapt);
 
+        onBackPressed();
         displayView(R.id.map);
 
     }
@@ -274,12 +277,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
@@ -297,21 +303,73 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 fragment = new Childcare_fragment();
                 title  = "Childcare";
                 viewIsAtHome = false;
-
-
                 break;
             case R.id.nav_education:
                 fragment = new education_fragment();
                 title = "Education";
                 viewIsAtHome = false;
                 break;
+            case R.id.nav_employment:
+                fragment = new education_fragment();
+                title = "Employment";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_family:
+                fragment = new education_fragment();
+                title = "Family";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_financial:
+                fragment = new education_fragment();
+                title = "Financial";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_food:
+                fragment = new education_fragment();
+                title = "Food";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_health:
+                fragment = new education_fragment();
+                title = "Health";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_housing:
+                fragment = new education_fragment();
+                title = "Housing";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_legal:
+                fragment = new education_fragment();
+                title = "Legal";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_lgbtq:
+                fragment = new education_fragment();
+                title = "LGBTQ";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_transportation:
+                fragment = new education_fragment();
+                title = "Transportation";
+                viewIsAtHome = false;
+                break;
+            case R.id.nav_veteran:
+                fragment = new education_fragment();
+                title = "Veteran";
+                viewIsAtHome = false;
+                break;
+
 
         }
 
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.addToBackStack(null);
             ft.replace(R.id.fragmentFrame, fragment);
             ft.commit();
+
+            //getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentFrame,fragment).commit();
         }
 
         // set the toolbar title
@@ -333,10 +391,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             drawer.closeDrawer(GravityCompat.START);
         }
         if (!viewIsAtHome) { //if the current view is not the News fragment
-            displayView(R.id.nav_view); //display the News fragment
-        } else {
-            moveTaskToBack(true);  //If view is in News fragment, exit application
+            displayView(R.id.nav_financial); //display the News fragment
         }
+//        else {
+//            moveTaskToBack(true);  //If view is in News fragment, exit application
+//        }
 
     }
 
