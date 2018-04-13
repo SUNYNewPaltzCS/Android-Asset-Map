@@ -46,10 +46,10 @@ public class education_fragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position ==0){
-                    Intent intent = new Intent(getActivity(), sub_education_activity.class);
+                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
                     startActivity(intent);
                 }else if(position==1){
-                    Intent intent = new Intent(getActivity(), sub_education_activity.class);
+                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
                     startActivity(intent);
 
                 }else if(position==2){

@@ -57,9 +57,6 @@
 
         <uses-library android:name="com.google.android.maps" />
 
-        <activity
-            android:name=".sub_education_activity"
-            android:label="@string/title_activity_sub_education_activity" />
     </application>
 
 </manifest>
