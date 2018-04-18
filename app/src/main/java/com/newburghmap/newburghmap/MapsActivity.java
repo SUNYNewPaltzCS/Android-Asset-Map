@@ -107,6 +107,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
 
     private ArrayList<String> places =  new ArrayList<>(600);
+    //private ArrayList<String> types =  new ArrayList<>();
+    //private ArrayList<String> subTypes =  new ArrayList<>();
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -240,6 +242,90 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    public ArrayList<String> types(String group) {
+        ArrayList<String> types =  new ArrayList<>();
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+
+        try {
+
+            Sqlresponse result = null;
+            String typ;
+
+            result = query(tableId);
+            List<List<Object>> rows = result.getRows();
+
+            types.clear();
+            for (List<Object> poi : rows) {
+                String check = (String) poi.get(3);
+                if(group.equals(check)){
+                    typ = (String) poi.get(6);
+                    if(!types.contains(typ)){
+                        types.add(typ);
+                        //Log.i(TAG, "Type " + poi.get(6));
+                    }
+
+                }
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return types;
+    }
+
+    public ArrayList<String> subTypes(String type) {
+        ArrayList<String> subtype =  new ArrayList<>();
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+
+        try {
+
+            Sqlresponse result = null;
+            String subtyp;
+
+            result = query(tableId);
+            List<List<Object>> rows = result.getRows();
+
+            for (List<Object> poi : rows) {
+                String check = (String) poi.get(6);
+                if(type.equals(check)){
+                    subtyp = (String) poi.get(7);
+                    if(!subtype.contains(subtyp)){
+                        subtype.add(subtyp);
+                        Log.i(TAG, "subType " + poi.get(7));
+                    }
+
+                }
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return subtype;
+    }
 
     public void ShowBusRoute(View v){
         if(busClick==0){
@@ -399,8 +485,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -479,7 +563,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 for (List<Object> poi : rows) {
                     String name = (String) poi.get(0);
+
                     if( location.equalsIgnoreCase(name)){
+                        Log.i(TAG, "a " + poi.get(6));
+                        Log.i(TAG, "b " + poi.get(7));
+                        Log.i(TAG, "c " + poi.get(8));
+                        Log.i(TAG, "d " + poi.get(9));
+
+
                         BigDecimal lat = (BigDecimal) poi.get(1);
                         BigDecimal lon = (BigDecimal) poi.get(2);
                         LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
@@ -890,7 +981,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Sqlresponse sqlresponse = null;
             try {
                 //String parenting = "parenting";
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group', description, DesctriptionES FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group', description, DesctriptionES, type, subtype FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
