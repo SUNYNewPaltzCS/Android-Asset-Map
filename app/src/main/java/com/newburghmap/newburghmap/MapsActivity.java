@@ -27,6 +27,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,7 +99,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static LatLng latilngi;
     int busClick = 0;
     KmlLayer kml;
+    KmlLayer kml1;
     Dialog myDialog;
+    Dialog myDialog1;
 
     /********************************
      * SIMONS TABLE ID
@@ -156,6 +159,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.custompopup);
+        myDialog1 = new Dialog(this);
+        myDialog1.setContentView(R.layout.buspopup);
 
 
         //get header of nav
@@ -261,8 +266,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String typ;
+            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
 
-            result = query(tableId);
+            result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             types.clear();
@@ -304,8 +310,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String subtyp;
+            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
 
-            result = query(tableId);
+            result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             for (List<Object> poi : rows) {
@@ -330,8 +337,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void ShowBusRoute(View v){
         if(busClick==0){
             try {
-                kml = new KmlLayer(mMap,R.raw.finalroutesbuses,getApplicationContext());
+                kml = new KmlLayer(mMap,R.raw.busr,getApplicationContext());
                 kml.addLayerToMap();
+                kml1 = new KmlLayer(mMap,R.raw.busstop,getApplicationContext());
+                kml1.addLayerToMap();
                 busClick++;
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
@@ -339,25 +348,86 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 e.printStackTrace();
             }
         }else{
-            kml.removeLayerFromMap();
+            clearMap();
             busClick--;
         }
     }
 
+    public void buspopup(View v){
+        //Set Bus custom view here.
+        TextView name = (TextView)myDialog1.findViewById(R.id.pop);
+        myDialog1.show();
+
+    }
+
     //This opens the custompopup.xml with the streetview and other info about the marker.
-    public void InfoWindow(View v) {
+    public void InfoWindow(View v,Marker mm) throws ExecutionException, InterruptedException {
         TextView txtclose;
+
+
         final StreetViewPanoramaFragment streetViewPanoramaFragment =
                 (StreetViewPanoramaFragment) getFragmentManager()
                         .findFragmentById(R.id.streetviewpanorama);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
+
+        TextView name = (TextView)myDialog.findViewById(R.id.name);
+        TextView description = (TextView)myDialog.findViewById(R.id.description);
+        TextView address = (TextView)myDialog.findViewById(R.id.address);
+        TextView phone = (TextView)myDialog.findViewById(R.id.phone);
+        TextView hours = (TextView)myDialog.findViewById(R.id.hours);
+        TextView link = (TextView)myDialog.findViewById(R.id.link);
+
+
+        Sqlresponse result;
+        String q = "SELECT name, description, DesctriptionES, address, phone , hours , link  FROM "+tableId+" WHERE latitude = "+mm.getPosition().latitude+" AND longitude = "+mm.getPosition().longitude ;
+
+
+        result = query(tableId,q);
+
+        List<List<Object>> rows = result.getRows();
+
+        name.setText("Name :"+ rows.get(0).get(0));
+        if(rows.get(0).get(1).toString().isEmpty()){
+            description.setText("Description : N/A");
+        }else{
+            description.setText("Description : " +rows.get(0).get(1));
+        }
+
+        if(rows.get(0).get(3).toString().isEmpty()){
+            address.setText("Address : N/A");
+        }else{
+            address.setText("Address :"+ rows.get(0).get(3));
+        }
+
+        if(rows.get(0).get(4).toString().isEmpty()){
+            address.setText("Phone : N/A");
+        }else{
+            phone.setText("Phone : " +rows.get(0).get(4));
+            Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
+        }
+
+        if(rows.get(0).get(5).toString().isEmpty()){
+            hours.setText("Phone : N/A");
+        }else{
+            hours.setText("Hours : " +rows.get(0).get(5));
+        }
+
+        if(rows.get(0).get(6).toString().isEmpty()){
+            link.setText("Link : N/A");
+        }else{
+            link.setText("Link : " + rows.get(0).get(6));
+            Linkify.addLinks(link, Linkify.WEB_URLS);
+
+        }
         txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
         myDialog.show();
         txtclose.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v) {
+
                 myDialog.hide();
+
             }
         });
 
@@ -558,7 +628,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
 
                 Sqlresponse result;
-                result = query(tableId);
+                String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+
+                result = query(tableId,q);
+
                 List<List<Object>> rows = result.getRows();
 
                 for (List<Object> poi : rows) {
@@ -738,8 +811,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             Sqlresponse result = null;
+            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
 
-            result = query(tableId);
+            result = query(tableId,q);
+
             List<List<Object>> rows = result.getRows();
 
             places.clear();
@@ -806,8 +881,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
 
                 Sqlresponse result = null;
+                String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
 
-                result = query(tableId);
+                result = query(tableId,q);
+
 
                 List<List<Object>> rows = result.getRows();
 
@@ -846,7 +923,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .position(latLng)
                                 .title(name)
                                 .snippet(description)
-                                .icon(iconRetrieve(group)));
+                                .icon(iconRetrieve(group))).setTag("places");
                     }
 
                 } else {
@@ -882,8 +959,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             Sqlresponse result = null;
+            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
 
-            result = query(tableId);
+            result = query(tableId, q);
+
 
             List<List<Object>> rows = result.getRows();
 
@@ -919,7 +998,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .position(latLng)
                                 .title(name)
                                 //.snippet(description)
-                                .icon(iconRetrieve(group)));
+                                .icon(iconRetrieve(group))).setTag("places");
                     }
                 }
             } else {
@@ -936,16 +1015,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //method to create snackbar with marker's info when marker is clicked.
     @Override
     public boolean onMarkerClick(Marker marker) {
-        latilngi = marker.getPosition();
-        InfoWindow(findViewById(R.id.streetviewpanorama));
+        if(marker.getTag()=="places"){
+            latilngi = marker.getPosition();
+            try {
+                InfoWindow(findViewById(R.id.streetviewpanorama),marker);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            //buspopup(findViewById(R.id.pop));
+
+
+        }
         return false;
     }
 
 
-    protected Sqlresponse query(String q) throws ExecutionException, InterruptedException {
+    public  Sqlresponse query(String tabID , String que) throws ExecutionException, InterruptedException {
         // Inspired from: https://github.com/digitalheir/fusion-tables-android/blob/master/src/com/google/fusiontables/ftclient/FtClient.java
         // It instantiates a GetTableTask class, calls execute, which calls doInBackground
-        return new GetTableTask(fclient).execute(q).get();
+        return new GetTableTask(fclient,que).execute(tabID).get();
     }
 
     //This opens the custompopup.xml with the streetview of the marker.Checks if there is a street view it displays it else ...
@@ -969,9 +1061,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected class GetTableTask extends AsyncTask<String, Void, Sqlresponse> {
         Fusiontables fclient;
+        String que;
 
-        public GetTableTask(Fusiontables fclient) {
+        public GetTableTask(Fusiontables fclient, String que) {
             this.fclient = fclient;
+            this.que = que;
         }
 
         @Override
@@ -981,13 +1075,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Sqlresponse sqlresponse = null;
             try {
                 //String parenting = "parenting";
-                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet("SELECT name, latitude, longitude, 'group', description, DesctriptionES, type, subtype FROM " + tableId);// +" WHERE 'subtype' = '"+parenting+"'");
+                Fusiontables.Query.SqlGet sql = fclient.query().sqlGet(que);// +" WHERE 'subtype' = '"+parenting+"'");
                 sqlresponse = sql.execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return sqlresponse;
         }
+
     }
 
     // Adding KML Layer to get the outline of Orange County. Method is called @onMapReady().
