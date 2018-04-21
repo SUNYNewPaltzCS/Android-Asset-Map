@@ -1,0 +1,1180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+
+	<name>busstop</name>
+	<open>1</open>
+	<Snippet maxLines="0"></Snippet>
+	<Style id="northside">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/northside.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="southside">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/southside.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="broadway">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/broadway.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+
+	<Style id="crosstown">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/crosstown.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+
+	<Style id="rt1">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/rt1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="rt2">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/rt2.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="rt3">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/rt3.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="rt4">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/rt4.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="newbMid">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/newb-mid.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Style id="mainline">
+		<IconStyle>
+			<Icon>
+				<href>https://www.newburghmap.com/icons/bus_routes/mainline.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<PolyStyle>
+			<color>ff000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	
+	<Folder>
+		<name>Northside</name>
+		<Placemark id="ID_00007">
+			<name>West and 1st</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+
+			<Point>
+				<coordinates>-74.03059098582688,41.50357498064967,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00004">
+			<name>Robinson and N. Plank Road</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.01986599268633,41.518083967419,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00006">
+			<name>Mid-Valley Mall</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.02836295867188,41.52184499860036,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00005">
+			<name>Shop Rite</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.03331117070708,41.52797639528221,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00003">
+			<name>South and Robinson</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.02052302583503,41.50754096956468,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00010">
+			<name>1st and DuBois</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.01522797285601,41.50252499110375,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00008">
+			<name>Gidney and West</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.02922899033462,41.51507803813936,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00011">
+			<name>1st and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.01060496974803,41.5021950071531,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00002">
+			<name>Grand and South</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.00912302919383,41.50675695606338,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00001">
+			<name>Broadway and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.01071704105624,41.49998801518476,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00009">
+			<name>1st and Robinson</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#northside</styleUrl>
+			<Point>
+				<coordinates>-74.02108695909989,41.50292503483971,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Southside</name>
+		<Placemark id="ID_00016">
+			<name>Cerone Place</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.03382895201746,41.49817497382686,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00015">
+			<name>Washington and Lake St.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02684096796807,41.49942598664813,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00013">
+			<name>Liberty and Washington</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.01085199435126,41.49837101647528,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00012">
+			<name>Broadway and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.01071704105624,41.49998801518476,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00014">
+			<name>Washington and Robinson</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02154595960539,41.49909003392505,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00020">
+			<name>Cedar and Walsh</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02190594333231,41.48896402606202,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00021">
+			<name>Cedar and Union</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.03020699588427,41.47919697826102,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00023">
+			<name>Quassaic and Walsh</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.01887398095057,41.48841902006974,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00022">
+			<name>Union and Quassaic</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02345701242746,41.47666204044284,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00024">
+			<name>Kenney Apartments</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02678096673229,41.49489498837858,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00025">
+			<name>Renwick and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.0113049605535,41.49445799977864,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00026">
+			<name>Newburgh 5 Corners</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.01797300767066,41.49571796428496,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00027">
+			<name>Newburgh Ferry Dock</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.00588733255532,41.50107424455315,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00018">
+			<name>Dickson and Rt. 9W</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02209899915569,41.49448696511006,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00017">
+			<name>Lake Drive Apts.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.03487199809148,41.49615798986322,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00019">
+			<name>John St. and Walsh Ave.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#southside</styleUrl>
+			<Point>
+				<coordinates>-74.02456695025059,41.48985303836156,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Broadway</name>
+		<Placemark id="ID_00038">
+			<name>Adams Fairacre Farms</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.06825067978753,41.50387963491218,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00037">
+			<name>Kohl&apos;s</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.06872563576101,41.49955977145386,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00035">
+			<name>Newburgh Mall</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.07076393293676,41.51858210104606,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00036">
+			<name>Wal Mart</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.07409979897328,41.49737359533661,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00034">
+			<name>Stop &amp; Shop</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.07274119464744,41.52317629479872,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00033">
+			<name>17K Bus Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.06320543922594,41.5045244806411,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00032">
+			<name>Target Plaza</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.05918796095992,41.50551307034253,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00030">
+			<name>Broadway and Robinson</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.02135199347784,41.50070501223026,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00031">
+			<name>Broadway and Fullerton</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.02658703002753,41.50107001043433,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00028">
+			<name>Broadway and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.01071704105624,41.49998801518476,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00029">
+			<name>Broadway and Du Bois</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#broadway</styleUrl>
+			<Point>
+				<coordinates>-74.0154779880461,41.50031296031428,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Crosstown</name>
+		<Placemark id="ID_00039">
+			<name>1st and Johnson</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.01334805180902,41.50239097282717,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00040">
+			<name>Broadway and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.01071704105624,41.49998801518476,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00041">
+			<name>S. Williams and Liberty</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.01111797384624,41.49607103990104,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00042">
+			<name>Robinson and S. Williams</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.02182102914085,41.49680596214261,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00043">
+			<name>Squire Village</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.02490255128497,41.47468402696531,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00044">
+			<name>Robinson and Walsh</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.01887398095057,41.48841902006974,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00045">
+			<name>Rt. 94 and Forge Hill Rd</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.0496829566859,41.45617399687674,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00046">
+			<name>New Windsor Commons</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.02874125054719,41.46595422456038,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00047">
+			<name>Quaker and Rt. 32</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.05372756889979,41.43051929896948,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00048">
+			<name>Vails Gate/Price Chopper</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.05738698488015,41.45432237621247,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00049">
+			<name>Rt. 32 near Shop Rite</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.055205661435,41.45783323467351,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00050">
+			<name>Cornwall Hospital</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.04182883237726,41.43535832900665,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00051">
+			<name>Grand and Third</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.00934304101561,41.50394200505785,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00052">
+			<name>St. Luke&apos;s Hospital</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#crosstown</styleUrl>
+			<Point>
+				<coordinates>-74.0151637268773,41.50414873984359,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Route 1</name>
+		<Placemark id="ID_00053">
+			<name>Highland and Wickham</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.42167797238987,41.44932496507042,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00054">
+			<name>Summitfield</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.43518302232243,41.45561298711528,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00055">
+			<name>Tall Oaks</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.43950856733686,41.45541082542917,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00056">
+			<name>Railroad Avenue Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00057">
+			<name>North at 7-11</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.41340303857189,41.46424995798122,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00058">
+			<name>Lake Ave.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.42998365379661,41.45310328876048,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00059">
+			<name>Community Campus</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt1</styleUrl>
+			<Point>
+				<coordinates>-74.43644146352311,41.45283581800846,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Route 2</name>
+		<Placemark id="ID_00060">
+			<name>Railroad Avenue Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00061">
+			<name>Ridge St. at Myrtle Ave.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.4085440359648,41.44319002989377,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00062">
+			<name>David Moore Heights</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.41476826346451,41.43358786399731,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00063">
+			<name>Shoprite Dolson Ave.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.42487796795811,41.42969197523836,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00064">
+			<name>Sutton Hill</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.43274498664081,41.42509000271299,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00065">
+			<name>74 and 76 Uhlig Rd.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.44389883003956,41.42278054336436,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00066">
+			<name>Store at Amchir</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.44181104367505,41.42630000767488,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00067">
+			<name>Orange County Community Center (OCCC)</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt2</styleUrl>
+			<Point>
+				<coordinates>-74.42559406194161,41.44064546667984,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Route 3</name>
+		<Placemark id="ID_00068">
+			<name>Railroad Avenue Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00069">
+			<name>Wisner Ave. at Gardner</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.39990394586859,41.44958301776992,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00070">
+			<name>Walmart</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.37930825449426,41.45608073643864,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00071">
+			<name>Galleria</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.36836555969364,41.4539989369837,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00072">
+			<name>95 Crystal Run</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.35874017690468,41.45132237450879,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00073">
+			<name>75 Crystal Run</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.36143335641928,41.44826078852906,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00074">
+			<name>Orange Reg. Med. Center</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt3</styleUrl>
+			<Point>
+				<coordinates>-74.36919159739189,41.44199270012782,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Route 4</name>
+		<Placemark id="ID_00075">
+			<name>Railroad Avenue Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00076">
+			<name>Senior Way</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.40004361953713,41.46096152084076,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00077">
+			<name>Aldi</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.39752803995553,41.45608100281031,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00078">
+			<name>Shoprite 211</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.39668325512201,41.45452418608591,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00079">
+			<name>Big Lots</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.38756438603043,41.45440777786704,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00080">
+			<name>Middletown Medical</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.38587635741547,41.45700418336448,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00081">
+			<name>Price Chopper</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#rt4</styleUrl>
+			<Point>
+				<coordinates>-74.38256022418653,41.45014749600468,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Newburgh - Middletown</name>
+		<Placemark id="ID_00082">
+			<name>Orange Plaza Khols</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.38081493804891,41.45504018633359,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00083">
+			<name>ShortLine Terminal, 14 Railroad Ave.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00084">
+			<name>Shop Rite (Rt. 211)</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.39668048765944,41.45452915179785,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00085">
+			<name>Galleria Mall, Liberty Travel</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.36836555969364,41.4539989369837,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00086">
+			<name>ShortLine Terminal</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.06320543922594,41.5045244806411,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00087">
+			<name>FedEx Ground Services</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.11310627683923,41.51315778236292,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00088">
+			<name>Air National Guard (17K entrance)</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.08357316145045,41.5006974130789,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00089">
+			<name>N.E. Buisness Center (17K entrance)</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#newbMid</styleUrl>
+			<Point>
+				<coordinates>-74.08753273165344,41.51411251679615,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Mainline</name>
+		<Placemark id="ID_00090">
+			<name>Route 17M and Church St.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.1527800004302,41.30739798109409,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00091">
+			<name>Monroe Terminal - Mill Pond Parkway</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.18941396985024,41.3289920229951,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00092">
+			<name>Museum Village and 17M</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.19965002187921,41.34445196674677,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00093">
+			<name>Route 17M at Cumberland Farms</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.27477498865527,41.35204339995377,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00094">
+			<name>Holiday Inn Express</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.28460235243725,41.35584304453158,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00095">
+			<name>Whispering Hills</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.29524605841611,41.36267097611572,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00096">
+			<name>Shop-Rite Plaza</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.28476503876276,41.35796398271032,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00097">
+			<name>VA Clinic</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.34003959491537,41.39469965448964,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00098">
+			<name>Goshen, Village Bus Shelter</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.32579608267271,41.40188914840764,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00099">
+			<name>County Government Center</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.31932764415336,41.40608653531625,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00100">
+			<name>Crystal Run Health Care Building Doorway</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.35686023592905,41.45203578560461,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00101">
+			<name>Orange Plaza - Kohl&apos;s</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.38081493804891,41.45504018633359,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00102">
+			<name>Galleria Mall - Liberty Travel</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.36836555969364,41.4539989369837,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00103">
+			<name>Middletown Terminal, 14 Railroad Ave</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.41735555420875,41.44802744409963,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00104">
+			<name>Jct. Dunning and Schutt Road</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.3808069771796,41.45055604315905,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00105">
+			<name>Woodbury Common Bus Shelter</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.12409706153332,41.31828067262497,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00106">
+			<name>Wal-Mart/Home Depot</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.14684504351318,41.31866798115647,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00107">
+			<name>Orange Regional Medical Center</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.36919159739189,41.44199270012782,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="ID_00108">
+			<name>Matthew St. Park and Ride</name>
+			<Snippet maxLines="0"></Snippet>
+			<description></description>
+			<styleUrl>#mainline</styleUrl>
+			<Point>
+				<coordinates>-74.33433101688658,41.39624700318174,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+</kml>
