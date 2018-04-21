@@ -163,7 +163,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //get menu of nav
         Menu menu = navigationView.getMenu();
         //get menu items
-        final MenuItem nav_childcare = menu.findItem(R.id.nav_childcare);
+       // final MenuItem nav_childcare = menu.findItem(R.id.nav_childcare);
         final MenuItem nav_education = menu.findItem(R.id.nav_education);
         final MenuItem nav_employment = menu.findItem(R.id.nav_employment);
         final MenuItem nav_family = menu.findItem(R.id.nav_family);
@@ -191,7 +191,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 {
                     spanish = true;
 
-                    nav_childcare.setTitle("Cuidado de niños");
+                   // nav_childcare.setTitle("Cuidado de niños");
                     nav_education.setTitle("Educación");
                     nav_employment.setTitle("Empleo");
                     nav_family.setTitle("Familia");
@@ -206,7 +206,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     // The toggle is disabled
                     spanish = false;
 
-                    nav_childcare.setTitle("Childcare");
+                   // nav_childcare.setTitle("Childcare");
                     nav_education.setTitle("Education");
                     nav_employment.setTitle("Employment");
                     nav_family.setTitle("Family");
@@ -385,63 +385,63 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String title = getString(R.string.app_name);
         viewIsAtHome = true;
         switch (viewId) {
-            case R.id.nav_childcare:
-                fragment = new Childcare_fragment();
-                title  = "Childcare";
-                viewIsAtHome = false;
-                break;
+//            case R.id.nav_childcare:
+//                fragment = new type1_fragment(types("childcare"));
+//                title  = "Childcare";
+//                viewIsAtHome = false;
+//                break;
             case R.id.nav_education:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("education"));
                 title = "Education";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_employment:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("employment"));
                 title = "Employment";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_family:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("family"));
                 title = "Family";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_financial:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("financial"));
                 title = "Financial";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_food:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("food"));
                 title = "Food";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_health:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("health"));
                 title = "Health";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_housing:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("housing"));
                 title = "Housing";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_legal:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("legal"));
                 title = "Legal";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_lgbtq:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("lGBTQ"));
                 title = "LGBTQ";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_transportation:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("transportation"));
                 title = "Transportation";
                 viewIsAtHome = false;
                 break;
             case R.id.nav_veteran:
-                fragment = new education_fragment();
+                fragment = new type1_fragment(types("veteran"));
                 title = "Veteran";
                 viewIsAtHome = false;
                 break;

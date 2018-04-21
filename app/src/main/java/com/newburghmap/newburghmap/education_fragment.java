@@ -1,6 +1,5 @@
 package com.newburghmap.newburghmap;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,15 +11,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class education_fragment extends Fragment {
 
+    ArrayList<String> type;
 
     public education_fragment() {
         // Required empty public constructor
+    }
+
+    public education_fragment(ArrayList<String> types) {
+        type=types;
     }
 
 
@@ -37,9 +44,9 @@ public class education_fragment extends Fragment {
         ListView listView = (ListView) view.findViewById((R.id.educationMenu));
 
         ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_list_item_1, educationMenuItems
-        );
+                getActivity(), android.R.layout.simple_list_item_1, type);
 
+//maps.types("Family"
         listView.setAdapter(listViewAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".type1_fragment">
+    android:background="@color/white"
+    tools:context=".type1_fragment"
+    tools:layout_editor_absoluteY="81dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <!--<ImageButton-->
+    <!--android:id="@+id/back"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="0dp"-->
 
-</FrameLayout>
+    <!--android:layout_weight="1"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--android:scaleType="fitCenter"-->
+    <!--app:srcCompat="@drawable/back"-->
+    <!--tools:layout_editor_absoluteX="268dp"-->
+    <!--tools:layout_editor_absoluteY="225dp" />-->
+
+    <ListView
+        android:id="@+id/type1Menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

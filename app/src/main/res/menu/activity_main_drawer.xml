@@ -6,10 +6,10 @@
 
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_childcare"
-            android:icon="@drawable/smchildcare"
-            android:title="Childcare" />
+        <!--<item-->
+            <!--android:id="@+id/nav_childcare"-->
+            <!--android:icon="@drawable/smchildcare"-->
+            <!--android:title="Childcare" />-->
         <item
             android:id="@+id/nav_education"
             android:icon="@drawable/smeducation"
