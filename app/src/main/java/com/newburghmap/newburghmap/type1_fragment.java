@@ -1,5 +1,6 @@
 package com.newburghmap.newburghmap;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ public class type1_fragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("ValidFragment")
     public type1_fragment(ArrayList<String> types) {
         type=types;
     }
@@ -53,11 +55,11 @@ public class type1_fragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position ==0){
-                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
+//                    startActivity(intent);
                 }else if(position==1){
-                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), Childcare_fragment.class);
+//                    startActivity(intent);
 
                 }else if(position==2){
 
