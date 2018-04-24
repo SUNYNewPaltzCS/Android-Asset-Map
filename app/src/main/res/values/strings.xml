@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewburghMap</string>
+    <string name="app_name">Newburgh Map</string>
     <string name="title_activity_maps">ESPRI Community Asset Map</string>
     <string name="map_url">https://www.newburghmap.com/kml/orange_county.kmz</string>
     <string name="open">open</string>
