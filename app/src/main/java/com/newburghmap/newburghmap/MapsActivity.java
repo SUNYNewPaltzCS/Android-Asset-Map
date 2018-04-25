@@ -78,6 +78,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.app.PendingIntent.getActivity;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -263,20 +265,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String typ;
-            String q = "SELECT name, latitude, longitude, 'group', type, typeES FROM "+tableId;
+            String q = "SELECT 'group', type, typeES FROM "+tableId;
 
             result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             types.clear();
             for (List<Object> poi : rows) {
-                String check = (String) poi.get(3);
+                String check = (String) poi.get(0);
                 if(group.equals(check)){
-                    typ = (String) poi.get(4);
-                    if(!types.contains(typ)){
-                        types.add(typ);
-                        //Log.i(TAG, "Type " + poi.get(6));
+                    if(!spanish){
+                        typ = (String) poi.get(1);
+                        if(!types.contains(typ)){
+                            types.add(typ);
+                        }
                     }
+                    else{
+                        typ = (String) poi.get(2);
+                        if(!types.contains(typ)){
+                            types.add(typ);
+                        }
+                    }
+
 
                 }
             }
@@ -307,19 +317,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String subtyp;
-            String q = "SELECT name, latitude, longitude, 'group', type, subtype, subtypeES FROM "+tableId;
+            String q = "SELECT type, subtype, subtypeES FROM "+tableId;
 
             result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             for (List<Object> poi : rows) {
-                String check = (String) poi.get(4);
+                String check = (String) poi.get(0);
                 if(type.equals(check)){
-                    subtyp = (String) poi.get(5);
-                    if(!subtype.contains(subtyp)){
-                        subtype.add(subtyp);
-                        Log.i(TAG, "subType " + poi.get(5));
+                    if(!spanish){
+                        subtyp = (String) poi.get(1);
+                        if(!subtype.contains(subtyp)){
+                            subtype.add(subtyp);
+                            Log.i(TAG, "subType " + poi.get(1));
+                        }
                     }
+                    else{
+                        subtyp = (String) poi.get(2);
+                        if(!subtype.contains(subtyp)){
+                            subtype.add(subtyp);
+                            Log.i(TAG, "subType " + poi.get(2));
+                        }
+                    }
+
 
                 }
             }
@@ -491,6 +511,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         viewIsAtHome = true;
+
         switch (viewId) {
 
             case R.id.nav_education:
