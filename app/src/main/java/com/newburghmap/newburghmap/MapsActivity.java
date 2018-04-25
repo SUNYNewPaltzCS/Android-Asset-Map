@@ -81,10 +81,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static android.app.PendingIntent.getActivity;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
         OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback ,
+
+
         NavigationView.OnNavigationItemSelectedListener{
 
 
@@ -169,7 +174,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //get menu of nav
         Menu menu = navigationView.getMenu();
         //get menu items
-       // final MenuItem nav_childcare = menu.findItem(R.id.nav_childcare);
         final MenuItem nav_education = menu.findItem(R.id.nav_education);
         final MenuItem nav_employment = menu.findItem(R.id.nav_employment);
         final MenuItem nav_family = menu.findItem(R.id.nav_family);
@@ -181,6 +185,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final MenuItem nav_lgbtq = menu.findItem(R.id.nav_lgbtq);
         final MenuItem nav_transportation = menu.findItem(R.id.nav_transportation);
         final MenuItem nav_veteran = menu.findItem(R.id.nav_veteran);
+        final MenuItem nav_viewall = menu.findItem(R.id.nav_viewall);
 
 
 
@@ -197,7 +202,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 {
                     spanish = true;
 
-                   // nav_childcare.setTitle("Cuidado de niños");
                     nav_education.setTitle("Educación");
                     nav_employment.setTitle("Empleo");
                     nav_family.setTitle("Familia");
@@ -207,12 +211,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     nav_housing.setTitle("Alojamiento");
                     nav_transportation.setTitle("Transporte");
                     nav_veteran.setTitle("Veterano");
+                    nav_viewall.setTitle("Ver todo");
 
                 } else {
                     // The toggle is disabled
                     spanish = false;
 
-                   // nav_childcare.setTitle("Childcare");
                     nav_education.setTitle("Education");
                     nav_employment.setTitle("Employment");
                     nav_family.setTitle("Family");
@@ -222,12 +226,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     nav_housing.setTitle("Housing");
                     nav_transportation.setTitle("Transportation");
                     nav_veteran.setTitle("Veteran");
+                    nav_viewall.setTitle("View All");
 
                 }
             }
         });
-
-
 
 
         autoCompleter();
@@ -242,7 +245,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
-
 
         displayView(item.getItemId());
         return true;
@@ -267,20 +269,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String typ;
-            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+            String q = "SELECT 'group', type, typeES FROM "+tableId;
 
             result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             types.clear();
             for (List<Object> poi : rows) {
-                String check = (String) poi.get(3);
+                String check = (String) poi.get(0);
                 if(group.equals(check)){
-                    typ = (String) poi.get(6);
-                    if(!types.contains(typ)){
-                        types.add(typ);
-                        //Log.i(TAG, "Type " + poi.get(6));
+                    if(!spanish){
+                        typ = (String) poi.get(1);
+                        if(!types.contains(typ)){
+                            types.add(typ);
+                        }
                     }
+                    else{
+                        typ = (String) poi.get(2);
+                        if(!types.contains(typ)){
+                            types.add(typ);
+                        }
+                    }
+
 
                 }
             }
@@ -311,19 +321,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String subtyp;
-            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+            String q = "SELECT type, subtype, subtypeES FROM "+tableId;
 
             result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
 
             for (List<Object> poi : rows) {
-                String check = (String) poi.get(6);
+                String check = (String) poi.get(0);
                 if(type.equals(check)){
-                    subtyp = (String) poi.get(7);
-                    if(!subtype.contains(subtyp)){
-                        subtype.add(subtyp);
-                        Log.i(TAG, "subType " + poi.get(7));
+                    if(!spanish){
+                        subtyp = (String) poi.get(1);
+                        if(!subtype.contains(subtyp)){
+                            subtype.add(subtyp);
+                            Log.i(TAG, "subType " + poi.get(1));
+                        }
                     }
+                    else{
+                        subtyp = (String) poi.get(2);
+                        if(!subtype.contains(subtyp)){
+                            subtype.add(subtyp);
+                            Log.i(TAG, "subType " + poi.get(2));
+                        }
+                    }
+
 
                 }
             }
@@ -381,46 +401,86 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         Sqlresponse result;
-        String q = "SELECT name, description, DesctriptionES, address, phone , hours , link  FROM "+tableId+" WHERE latitude = "+mm.getPosition().latitude+" AND longitude = "+mm.getPosition().longitude ;
+        String q = "SELECT name, description, DesctriptionES, address, phone , hours , hoursES, link  FROM "+tableId+" WHERE latitude = "+mm.getPosition().latitude+" AND longitude = "+mm.getPosition().longitude ;
 
 
         result = query(tableId,q);
 
         List<List<Object>> rows = result.getRows();
 
-        name.setText("Name :"+ rows.get(0).get(0));
-        if(rows.get(0).get(1).toString().isEmpty()){
-            description.setText("Description : N/A");
-        }else{
-            description.setText("Description : " +rows.get(0).get(1));
+        //english
+        if(!spanish){
+            name.setText("Name: "+ rows.get(0).get(0));
+            if(rows.get(0).get(1).toString().isEmpty()){
+                description.setText("Description: N/A");
+            }else{
+                description.setText("Description: " + rows.get(0).get(1));
+            }
+
+            if(rows.get(0).get(3).toString().isEmpty()){
+                address.setText("Address: N/A");
+            }else{
+                address.setText("Address: "+ rows.get(0).get(3));
+            }
+
+            if(rows.get(0).get(4).toString().isEmpty()){
+                address.setText("Phone: N/A");
+            }else{
+                phone.setText("Phone: " +rows.get(0).get(4));
+                Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
+            }
+
+            if(rows.get(0).get(5).toString().isEmpty()){
+                hours.setText("Hours: N/A");
+            }else{
+                hours.setText("Hours: " +rows.get(0).get(5));
+            }
+
+            if(rows.get(0).get(6).toString().isEmpty()){
+                link.setText("Link: N/A");
+            }else{
+                link.setText("Link: " + rows.get(0).get(7));
+                Linkify.addLinks(link, Linkify.WEB_URLS);
+
+            }
+        }
+        //spanish
+        else{
+            name.setText("Nombre: "+ rows.get(0).get(0));
+            if(rows.get(0).get(1).toString().isEmpty()){
+                description.setText("Descripción: N/A");
+            }else{
+                description.setText("Descripción: " + rows.get(0).get(2));
+            }
+
+            if(rows.get(0).get(3).toString().isEmpty()){
+                address.setText("Dirección: N/A");
+            }else{
+                address.setText("Dirección: "+ rows.get(0).get(3));
+            }
+
+            if(rows.get(0).get(4).toString().isEmpty()){
+                address.setText("Teléfono: N/A");
+            }else{
+                phone.setText("Teléfono: " +rows.get(0).get(4));
+                Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
+            }
+
+            if(rows.get(0).get(5).toString().isEmpty()){
+                hours.setText("Horas: N/A");
+            }else{
+                hours.setText("Horas: " +rows.get(0).get(6));
+            }
+
+            if(rows.get(0).get(6).toString().isEmpty()){
+                link.setText("Enlazar: N/A");
+            }else{
+                link.setText("Enlazar: " + rows.get(0).get(7));
+                Linkify.addLinks(link, Linkify.WEB_URLS);
+
+            }
         }
 
-        if(rows.get(0).get(3).toString().isEmpty()){
-            address.setText("Address : N/A");
-        }else{
-            address.setText("Address :"+ rows.get(0).get(3));
-        }
-
-        if(rows.get(0).get(4).toString().isEmpty()){
-            address.setText("Phone : N/A");
-        }else{
-            phone.setText("Phone : " +rows.get(0).get(4));
-            Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
-        }
-
-        if(rows.get(0).get(5).toString().isEmpty()){
-            hours.setText("Phone : N/A");
-        }else{
-            hours.setText("Hours : " +rows.get(0).get(5));
-        }
-
-        if(rows.get(0).get(6).toString().isEmpty()){
-            link.setText("Link : N/A");
-        }else{
-            link.setText("Link : " + rows.get(0).get(6));
-            Linkify.addLinks(link, Linkify.WEB_URLS);
-
-        }
         txtclose = (TextView) myDialog.findViewById(R.id.txtclose);
         myDialog.show();
         txtclose.setOnClickListener(new View.OnClickListener()
@@ -455,69 +515,88 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         viewIsAtHome = true;
+
         switch (viewId) {
-//            case R.id.nav_childcare:
-//                fragment = new type1_fragment(types("childcare"));
-//                title  = "Childcare";
-//                viewIsAtHome = false;
-//                break;
+
             case R.id.nav_education:
                 fragment = new type1_fragment(types("education"));
                 title = "Education";
+                clearMap();
+                populateMapFromFusionTables("education");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_employment:
                 fragment = new type1_fragment(types("employment"));
                 title = "Employment";
+                clearMap();
+                populateMapFromFusionTables("employment");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_family:
                 fragment = new type1_fragment(types("family"));
                 title = "Family";
+                clearMap();
+                populateMapFromFusionTables("family");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_financial:
                 fragment = new type1_fragment(types("financial"));
                 title = "Financial";
+                clearMap();
+                populateMapFromFusionTables("financial");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_food:
                 fragment = new type1_fragment(types("food"));
                 title = "Food";
+                clearMap();
+                populateMapFromFusionTables("food");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_health:
                 fragment = new type1_fragment(types("health"));
                 title = "Health";
+                clearMap();
+                populateMapFromFusionTables("health");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_housing:
                 fragment = new type1_fragment(types("housing"));
                 title = "Housing";
+                clearMap();
+                populateMapFromFusionTables("housing");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_legal:
                 fragment = new type1_fragment(types("legal"));
                 title = "Legal";
+                clearMap();
+                populateMapFromFusionTables("legal");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_lgbtq:
                 fragment = new type1_fragment(types("lGBTQ"));
                 title = "LGBTQ";
+                clearMap();
+                populateMapFromFusionTables("lgbtq");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_transportation:
                 fragment = new type1_fragment(types("transportation"));
                 title = "Transportation";
+                clearMap();
+                populateMapFromFusionTables("transportation");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_veteran:
                 fragment = new type1_fragment(types("veteran"));
                 title = "Veteran";
+                clearMap();
+                populateMapFromFusionTables("veteran");
                 viewIsAtHome = false;
                 break;
-
-
+            case R.id.nav_viewall:
+                populateMapFromFusionTables("all");
         }
 
         if (fragment != null) {
@@ -582,19 +661,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
     }
 
-    //Home button method
+    //Refresh button method
     public void home(View v) {
-        if (v.getId() == R.id.B_home || v.getId() == R.id.refresh) {
+        if (v.getId() == R.id.refresh) {
             clearMap();
             //start with map at center of Newburgh, NY
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
-        }
-    }
-
-    //Clear Map button method
-    public void onClick2(View v) {
-        if (v.getId() == R.id.B_clear) {
-            clearMap();
         }
     }
 
@@ -629,7 +701,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
 
                 Sqlresponse result;
-                String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+                String q = "SELECT name, latitude, longitude, 'group' FROM "+tableId;
 
                 result = query(tableId,q);
 
@@ -639,11 +711,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String name = (String) poi.get(0);
 
                     if( location.equalsIgnoreCase(name)){
-                        Log.i(TAG, "a " + poi.get(6));
-                        Log.i(TAG, "b " + poi.get(7));
-                        Log.i(TAG, "c " + poi.get(8));
-                        Log.i(TAG, "d " + poi.get(9));
-
 
                         BigDecimal lat = (BigDecimal) poi.get(1);
                         BigDecimal lon = (BigDecimal) poi.get(2);
@@ -653,9 +720,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         clearMap();
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
-                                .title(name)
-                                //.snippet(description)
-                                .icon(iconRetrieve(group)));
+                                .icon(iconRetrieve(group)))
+                                .setTag("places");
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                         break;
                     }
@@ -698,7 +764,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 } else //permission denied
                 {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
+                    if(!spanish){
+                        Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(this, "Permiso denegado", Toast.LENGTH_LONG).show();
+                    }
+
                 }
         }
     }
@@ -717,7 +789,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            markerOptions.title("Current Location");
+            if(!spanish){
+                markerOptions.title("Current Location");
+
+            }
+            else{
+                markerOptions.title("Ubicación actual");
+            }
 
             //add marker for current location
             currentLocationMarker = mMap.addMarker(markerOptions);
@@ -737,7 +815,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e(TAG, "Security exception: " + e);
         }
 
-        Toast.makeText(this, "Services within a 1/4 mile of your current location.", Toast.LENGTH_LONG).show();
+        if(!spanish){
+            Toast.makeText(this, "Services within a 1/4 mile of your current location.", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this, "Servicios dentro de 1/4 de milla de su ubicación.", Toast.LENGTH_LONG).show();
+        }
+
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
@@ -812,7 +896,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             Sqlresponse result = null;
-            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+            String q = "SELECT name  FROM "+tableId;
 
             result = query(tableId,q);
 
@@ -859,10 +943,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //copy and pasted from github repo!!
-    public void populateMapFromFusionTables(View v) {
+    public void populateMapFromFusionTables(String group) {
 
-        if (v.getId() == R.id.B_populate) {
+
             // TODO: to mak credentialsJSON work, you need to browse to https://console.developers.google.com/iam-admin/serviceaccounts/
             // create a service account with role "project > service account actor" (generate key), download the json file
             // rename it to service_account_credentials.json and place it under app/res/raw/
@@ -882,7 +965,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             try {
 
                 Sqlresponse result = null;
-                String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+                String q = "SELECT latitude, longitude, 'group'  FROM "+tableId;
 
                 result = query(tableId,q);
 
@@ -894,37 +977,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (mMap != null) {
 
                     for (List<Object> poi : rows) {
-                        /*DEBUG!
-                        Log.i(TAG, (String) poi.get(0));
-                        Log.i(TAG, "Lat " + poi.get(1));
-                        Log.i(TAG, "Lon " + poi.get(2));
-                        */
 
-                        //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
-                        // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
-                        String name  = (String) poi.get(0);
-
-                        BigDecimal lat = (BigDecimal) poi.get(1);
-                        BigDecimal lon = (BigDecimal) poi.get(2);
+                        BigDecimal lat = (BigDecimal) poi.get(0);
+                        BigDecimal lon = (BigDecimal) poi.get(1);
                         LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
 
-                        String group = (String) poi.get(3);
+                        String g = (String) poi.get(2);
 
-                        String description;
-                        //english
-                        if(!spanish){
-                            description = (String) poi.get(4);
+                        //used for populating map by group
+                        if(group.equals(g)){
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .icon(iconRetrieve(g)))
+                                    .setTag("places");
                         }
-                        //spanish
-                        else{
-                            description = (String) poi.get(5);
+                        else if(group.equals("all")){
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .icon(iconRetrieve(g)))
+                                    .setTag("places");
                         }
 
-                        mMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .title(name)
-                                .snippet(description)
-                                .icon(iconRetrieve(group))).setTag("places");
                     }
 
                 } else {
@@ -936,7 +1009,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
     }
 
     public void populateMapCurrentLocation(Location center) {
@@ -960,7 +1033,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             Sqlresponse result = null;
-            String q = "SELECT name, latitude, longitude, 'group', description, DesctriptionES, address, phone , hours , link  FROM "+tableId;
+            String q = "SELECT latitude, longitude, 'group' FROM "+tableId;
 
             result = query(tableId, q);
 
@@ -972,19 +1045,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (mMap != null) {
 
                 for (List<Object> poi : rows) {
-                    //DEBUG!
-                    // Log.i(TAG, (String) poi.get(0));
-                    // Log.i(TAG, "Lat " + poi.get(1));
-                    // Log.i(TAG, "Lon " + poi.get(2));
 
-                    //group, name, group(spanish), type, type(sp), subtype, subtype(sp), description, des(sp),
-                    // address, orig address, latitude, longitude, phone, hotline, contact, hours, hours(sp), link, icon
-                    String name = (String) poi.get(0);
-
-                    BigDecimal lat = (BigDecimal) poi.get(1);
-                    BigDecimal lon = (BigDecimal) poi.get(2);
+                    BigDecimal lat = (BigDecimal) poi.get(0);
+                    BigDecimal lon = (BigDecimal) poi.get(1);
                     LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
-                    String group = (String) poi.get(3);
+                    String group = (String) poi.get(2);
 
                     //needed to know if point is within 1/4 mile of location
                     Location test = new Location("");
@@ -997,9 +1062,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
-                                .title(name)
-                                //.snippet(description)
-                                .icon(iconRetrieve(group))).setTag("places");
+                                .icon(iconRetrieve(group)))
+                                .setTag("places");
                     }
                 }
             } else {
@@ -1013,7 +1077,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //method to create snackbar with marker's info when marker is clicked.
+    //method to create pop up with marker's info when marker is clicked.
     @Override
     public boolean onMarkerClick(Marker marker) {
         if(marker.getTag()=="places"){

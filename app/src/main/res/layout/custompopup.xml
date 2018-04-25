@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    android:background="@android:color/holo_blue_dark"
+    android:background="@android:color/white"
     android:padding="5dp">
 
     <fragment
