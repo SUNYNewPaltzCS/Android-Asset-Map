@@ -144,7 +144,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -663,6 +662,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             clearMap();
             //start with map at center of Newburgh, NY
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
+            //reset the title
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+
         }
     }
 
