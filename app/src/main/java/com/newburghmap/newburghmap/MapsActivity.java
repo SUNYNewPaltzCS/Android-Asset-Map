@@ -6,6 +6,7 @@ import android.app.Dialog;
 
 //import android.app.Fragment;
 
+import android.app.ExpandableListActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 
@@ -35,6 +36,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -76,60 +78,60 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.app.PendingIntent.getActivity;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
-        OnMarkerClickListener,
-        GoogleMap.OnMyLocationButtonClickListener,
-        OnStreetViewPanoramaReadyCallback ,
+
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
+        OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener  , OnStreetViewPanoramaReadyCallback ,
+
+
         NavigationView.OnNavigationItemSelectedListener{
 
 
-    private GoogleMap mMap;
-    private GoogleApiClient client;
-    private LocationRequest locationRequest;
-    private Location lastLocation;
-    private Marker currentLocationMarker;
-    private boolean viewIsAtHome;
-    public static final int REQUEST_LOCATION_CODE = 99;
-    public static LatLng latilngi;
-    int busClick = 0;
-    KmlLayer kml;
-    KmlLayer kml1;
-    Dialog myDialog;
-    Dialog myDialog1;
+        private GoogleMap mMap;
+        private GoogleApiClient client;
+        private LocationRequest locationRequest;
+        private Location lastLocation;
+        private Marker currentLocationMarker;
+        private boolean viewIsAtHome;
+        public static final int REQUEST_LOCATION_CODE = 99;
+        public static LatLng latilngi;
+        int busClick = 0;
+        KmlLayer kml;
+        KmlLayer kml1;
+        Dialog myDialog;
+        Dialog myDialog1;
 
-    /********************************
-     * SIMONS TABLE ID
-     *********************************
-     */
-    final String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+        /********************************
+         * SIMONS TABLE ID
+         *********************************
+         */
+        final String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
 
-    private ArrayList<String> places =  new ArrayList<>(600);
-    //private ArrayList<String> types =  new ArrayList<>();
-    //private ArrayList<String> subTypes =  new ArrayList<>();
+        private ArrayList<String> places =  new ArrayList<>(600);
+        //private ArrayList<String> types =  new ArrayList<>();
+        //private ArrayList<String> subTypes =  new ArrayList<>();
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
+        private DrawerLayout mDrawerLayout;
+        private ActionBarDrawerToggle mToggle;
 
-    //language toggle
-    private ToggleButton langToggle;
-    private Boolean spanish = false;
+        //language toggle
+        private ToggleButton langToggle;
+        private Boolean spanish = false;
 
 
-    // Google API client stuff
-    final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+        // Google API client stuff
+        final HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
-    GoogleCredential credential;
-    Fusiontables fclient;
-    protected static final String TAG = "MapsActivity";
+        GoogleCredential credential;
+        Fusiontables fclient;
+        protected static final String TAG = "MapsActivity";
 
 
     @Override
@@ -137,6 +139,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
 
         mDrawerLayout =  findViewById(R.id.drawerLayout);
 
