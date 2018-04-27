@@ -625,11 +625,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        if (!viewIsAtHome) { //if the current view is not the News fragment
-            displayView(R.id.drawerLayout); //display the News fragment
+        if (!viewIsAtHome) {
+            displayView(R.id.drawerLayout);
         }
         else {
-            moveTaskToBack(true);  //If view is in News fragment, exit application
+            moveTaskToBack(true);
         }
 
     }

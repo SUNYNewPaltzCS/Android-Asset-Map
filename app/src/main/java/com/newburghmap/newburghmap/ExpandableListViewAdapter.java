@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     ArrayList<String> type;
-    String[][] examples;
+   //ArrayList<ArrayList<String>> subType;
+    String[][] array2d;
 
     Context context;
 
@@ -24,9 +24,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @SuppressLint("ValidFragment")
-    public ExpandableListViewAdapter(ArrayList<String> types, String[][] examples) {
+    public ExpandableListViewAdapter(Context context,ArrayList<String> types, String[][] array2d) {
         this.type=types;
-        this.examples=examples;
+       // this.subType=subTypes;
+        this.context=context;
+        this.array2d=array2d;
     }
 
 
@@ -37,7 +39,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return examples[groupPosition].length;
+        return array2d[groupPosition].length;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return examples[groupPosition][childPosition];
+        return array2d[groupPosition][childPosition];
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
 
         final TextView txtView = new TextView(context);
-        txtView.setText(examples[groupPosition][childPosition]);
+        txtView.setText(array2d[groupPosition][childPosition]);
         txtView.setPadding(100,0,0,0);
 
         txtView.setOnClickListener(new View.OnClickListener() {
