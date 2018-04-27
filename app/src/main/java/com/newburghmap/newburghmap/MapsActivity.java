@@ -148,7 +148,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -626,11 +625,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        if (!viewIsAtHome) { //if the current view is not the News fragment
-            displayView(R.id.drawerLayout); //display the News fragment
+        if (!viewIsAtHome) {
+            displayView(R.id.drawerLayout);
         }
         else {
-            moveTaskToBack(true);  //If view is in News fragment, exit application
+            moveTaskToBack(true);
         }
 
     }
@@ -667,6 +666,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             clearMap();
             //start with map at center of Newburgh, NY
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
+            //reset the title
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+
         }
     }
 
