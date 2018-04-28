@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BC.iml" filepath="$PROJECT_DIR$/BC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BC.iml" filepath="$PROJECT_DIR$/BC.iml" />
       <module fileurl="file://$PROJECT_DIR$/BC-NewBurghAndroidMap.iml" filepath="$PROJECT_DIR$/BC-NewBurghAndroidMap.iml" />
       <module fileurl="file://$PROJECT_DIR$/BC-master.iml" filepath="$PROJECT_DIR$/BC-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
