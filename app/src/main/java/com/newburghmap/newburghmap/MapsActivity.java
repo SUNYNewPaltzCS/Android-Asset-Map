@@ -111,7 +111,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
          * SIMONS TABLE ID
          *********************************
          */
-        final String tableId = "1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+        final String tableId = "1gy6SXW0WexuugOvx6WlkhPcoFOlWTCQoIwd6AX5p";
+                //"1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
 
         private ArrayList<String> places =  new ArrayList<>(600);
         //private ArrayList<String> types =  new ArrayList<>();
@@ -301,8 +302,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return types;
     }
 
-    public ArrayList<String> subTypes(String type) {
-        ArrayList<String> subtype =  new ArrayList<>();
+    public ArrayList<ArrayList<String>> subTypes(ArrayList<String> type) {
+
         InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
         try {
             credential = GoogleCredential
@@ -316,34 +317,47 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
                 .build();
 
+        ArrayList<ArrayList<String>> subtypes = new ArrayList<ArrayList<String>>();
+
         try {
 
             Sqlresponse result = null;
             String subtyp;
-            String q = "SELECT type, subtype, subtypeES FROM "+tableId;
+            String q = "SELECT type, subtype, subtypeES FROM " + tableId;
 
-            result = query(tableId,q);
+            result = query(tableId, q);
             List<List<Object>> rows = result.getRows();
 
-            for (List<Object> poi : rows) {
-                String check = (String) poi.get(0);
-                if(type.equals(check)){
-                    if(!spanish){
-                        subtyp = (String) poi.get(1);
-                        if(!subtype.contains(subtyp)){
-                            subtype.add(subtyp);
-                            Log.i(TAG, "subType " + poi.get(1));
+            for (int i = 0; i < type.size(); i++) {
+                for (List<Object> poi : rows) {
+                    String check = (String) poi.get(0);
+                    if (type.get(i).equals(check)) {
+                        if (!spanish) {
+                            subtyp = (String) poi.get(1);
+                            if(subtypes.size() > i){
+                                if (!subtypes.get(i).contains(subtyp)) {
+                                    subtypes.get(i).add(subtyp);
+                                    Log.i(TAG, "subType " + poi.get(1));
+                                }
+                            }
+                            else{
+                                subtypes.add(new ArrayList<String>());
+                                subtypes.get(i).add(subtyp);
+                            }
+                        } else {
+                            subtyp = (String) poi.get(2);
+                            if(subtypes.size() > i){
+                                if (!subtypes.get(i).contains(subtyp)) {
+                                    subtypes.get(i).add(subtyp);
+                                    Log.i(TAG, "subType " + poi.get(2));
+                                }
+                            }
+                            else{
+                                subtypes.add(new ArrayList<String>());
+                                subtypes.get(i).add(subtyp);
+                            }
                         }
                     }
-                    else{
-                        subtyp = (String) poi.get(2);
-                        if(!subtype.contains(subtyp)){
-                            subtype.add(subtyp);
-                            Log.i(TAG, "subType " + poi.get(2));
-                        }
-                    }
-
-
                 }
             }
         } catch (ExecutionException e) {
@@ -351,7 +365,61 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return subtype;
+        return subtypes;
+    }
+
+    public ArrayList<String> locations(String subtype){
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+        ArrayList<String> locations = new ArrayList<String>();
+        try {
+
+            Sqlresponse result = null;
+            String name, address;
+            String q = "SELECT subtype, subtypeES, name, address FROM "+tableId;
+
+            result = query(tableId,q);
+            List<List<Object>> rows = result.getRows();
+
+            for (List<Object> poi : rows) {
+                if(!spanish){
+                    String check = (String) poi.get(0);
+                    if(subtype.equals(check)){
+                        name = (String) poi.get(3);
+                        address = (String) poi.get(4);
+                        if(!locations.contains(name)){
+                            locations.add("Name: " + name + "/n Address: " + address);
+                        }
+                    }
+                }
+                else{
+                    String check = (String) poi.get(1);
+                    if(subtype.equals(check)){
+                        name = (String) poi.get(3);
+                        address = (String) poi.get(4);
+                        if(!locations.contains(name)){
+                            locations.add("Name: " + name + "/n Address: " + address);
+                        }
+                    }
+                }
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return locations;
     }
 
     public void ShowBusRoute(View v){
@@ -518,77 +586,77 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (viewId) {
 
             case R.id.nav_education:
-                fragment = new type1_fragment(types("education"));
+                fragment = new type1_fragment(types("education"),subTypes(types("education")));
                 title = "Education";
                 clearMap();
                 populateMapFromFusionTables("education");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_employment:
-                fragment = new type1_fragment(types("employment"));
+                fragment = new type1_fragment(types("employment"),subTypes(types("employment")));
                 title = "Employment";
                 clearMap();
                 populateMapFromFusionTables("employment");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_family:
-                fragment = new type1_fragment(types("family"));
+                fragment = new type1_fragment(types("family"),subTypes(types("family")));
                 title = "Family";
                 clearMap();
                 populateMapFromFusionTables("family");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_financial:
-                fragment = new type1_fragment(types("financial"));
+                fragment = new type1_fragment(types("financial"),subTypes(types("financial")));
                 title = "Financial";
                 clearMap();
                 populateMapFromFusionTables("financial");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_food:
-                fragment = new type1_fragment(types("food"));
+                fragment = new type1_fragment(types("food"),subTypes(types("food")));
                 title = "Food";
                 clearMap();
                 populateMapFromFusionTables("food");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_health:
-                fragment = new type1_fragment(types("health"));
+                fragment = new type1_fragment(types("health"),subTypes(types("health")));
                 title = "Health";
                 clearMap();
                 populateMapFromFusionTables("health");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_housing:
-                fragment = new type1_fragment(types("housing"));
+                fragment = new type1_fragment(types("housing"),subTypes(types("housing")));
                 title = "Housing";
                 clearMap();
                 populateMapFromFusionTables("housing");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_legal:
-                fragment = new type1_fragment(types("legal"));
+                fragment = new type1_fragment(types("legal"),subTypes(types("legal")));
                 title = "Legal";
                 clearMap();
                 populateMapFromFusionTables("legal");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_lgbtq:
-                fragment = new type1_fragment(types("lGBTQ"));
+                fragment = new type1_fragment(types("lGBTQ"),subTypes(types("lGBTQ")));
                 title = "LGBTQ";
                 clearMap();
                 populateMapFromFusionTables("lgbtq");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_transportation:
-                fragment = new type1_fragment(types("transportation"));
+                fragment = new type1_fragment(types("transportation"),subTypes(types("transportation")));
                 title = "Transportation";
                 clearMap();
                 populateMapFromFusionTables("transportation");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_veteran:
-                fragment = new type1_fragment(types("veteran"));
+                fragment = new type1_fragment(types("veteran"),subTypes(types("veteran")));
                 title = "Veteran";
                 clearMap();
                 populateMapFromFusionTables("veteran");

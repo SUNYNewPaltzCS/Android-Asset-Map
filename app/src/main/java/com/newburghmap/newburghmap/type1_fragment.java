@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class type1_fragment extends Fragment {
 
+
     ArrayList<String> type;
     ExpandableListView expandableListView;
     //private String[][] examples = {{"Ed","uc","ation"},{"Emp", "ploy","ment"},{"fa","mi","ly"}};
@@ -31,13 +32,18 @@ public class type1_fragment extends Fragment {
 
 
 
-    public type1_fragment() {
-        // Required empty public constructor
-    }
+
+
+//    @SuppressLint("ValidFragment")
+//    public type1_fragment(ArrayList<String> types) {
+//        type=types;
+//    }
 
     @SuppressLint("ValidFragment")
-    public type1_fragment(ArrayList<String> types) {
-        type=types;
+    public type1_fragment(ArrayList<String> types, ArrayList<ArrayList<String>> mainArrayList) {
+
+        this.type = types;
+        this.mainArrayList = mainArrayList;
     }
 
     @Override
@@ -70,18 +76,18 @@ public class type1_fragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        subArrayList.add("girls");
-        subArrayList.add("Drool");
-        subArrayList.add("boys");
-        subArrayList.add("rule");
-
-        subArrayList2.add("ring");
-        subArrayList2.add("around");
-        subArrayList2.add("the");
-        subArrayList2.add("rosie");
-
-        mainArrayList.add((subArrayList));
-        mainArrayList.add((subArrayList2));
+//        subArrayList.add("girls");
+//        subArrayList.add("Drool");
+//        subArrayList.add("boys");
+//        subArrayList.add("rule");
+//
+//        subArrayList2.add("ring");
+//        subArrayList2.add("around");
+//        subArrayList2.add("the");
+//        subArrayList2.add("rosie");
+//
+//        mainArrayList.add((subArrayList));
+//        mainArrayList.add((subArrayList2));
 
         String[][] array2d = new String[mainArrayList.size()][];
         for (int i = 0; i < mainArrayList.size(); i++) {
