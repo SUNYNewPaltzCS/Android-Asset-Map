@@ -15,5 +15,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="bus_routes_and_timing">Bus Routes and Timing</string>
 
 </resources>

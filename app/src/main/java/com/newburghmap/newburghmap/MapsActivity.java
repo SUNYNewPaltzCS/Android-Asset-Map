@@ -7,6 +7,7 @@ import android.app.Dialog;
 //import android.app.Fragment;
 
 import android.app.ExpandableListActivity;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 
@@ -30,13 +31,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -112,6 +117,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
          *********************************
          */
         final String tableId = "1gy6SXW0WexuugOvx6WlkhPcoFOlWTCQoIwd6AX5p";
+        final String busTableId = "1C7bjeXCA0PwM423Z2jN5A-Z8wjpnUQa2qqHkIP_8";
                 //"1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
 
         private ArrayList<String> places =  new ArrayList<>(600);
@@ -139,6 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_maps);
 
         mDrawerLayout =  findViewById(R.id.drawerLayout);
@@ -164,7 +171,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.custompopup);
         myDialog1 = new Dialog(this);
-        myDialog1.setContentView(R.layout.buspopup);
 
 
         //get header of nav
@@ -420,7 +426,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return locations;
     }
 
-    public void ShowBusRoute(View v){
+    public void ShowBusRoute(View v ){
         if(busClick==0){
             try {
                 kml = new KmlLayer(mMap,R.raw.busr,getApplicationContext());
@@ -438,11 +444,114 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             busClick--;
         }
     }
+    int color;
+    @SuppressLint("ResourceAsColor")
+    public void buspopup(View view, Marker mm) throws ExecutionException, InterruptedException {
 
-    public void buspopup(View v){
-        //Set Bus custom view here.
-        TextView name = (TextView)myDialog1.findViewById(R.id.pop);
-        myDialog1.show();
+
+
+        myDialog1.setContentView(R.layout.buspopup);
+        TextView txtclose;
+        Sqlresponse result;
+        Sqlresponse result1;
+        String busstop = mm.getTitle().toLowerCase();
+
+        String q = "SELECT route FROM "+ busTableId + " WHERE stopName CONTAINS IGNORING CASE '"+busstop+"'"; //+" WHERE latitude = "+busstop
+        result = query(tableId,q);
+        if(result.getRows() != null){
+            String route = String.valueOf(result.getRows().get(0).get(0));
+
+            String q1 = "SELECT stopName , times  FROM "+ busTableId + " WHERE route CONTAINS IGNORING CASE '"+route+"'"; //+" WHERE latitude = "+busstop
+            result1 = query(tableId,q1);
+
+            List<List<Object>> rows = result1.getRows();
+            if(result1.getRows() !=null){
+                TableLayout stk = (TableLayout) myDialog1.findViewById(R.id.table_bus);
+                TableRow tbrow0 = new TableRow(this);
+                TableRow tbrow3 = new TableRow(this);
+
+
+
+
+                TextView stopname = new TextView(this);
+                stopname.setText(" Stop Names ");
+                stopname.setBackgroundColor(0xffcccccc);
+                tbrow0.addView(stopname);
+
+                TextView y = new TextView(this);
+                y.setText(" ");
+
+                TextView x = new TextView(this);
+                x.setText("");
+                x.setHeight(7);
+
+                tbrow0.addView(y);
+                tbrow3.addView(x);
+
+                TextView stoptime = new TextView(this);
+                stoptime.setText(" Stop Times ");
+                stoptime.setBackgroundColor(0xffcccccc);
+                tbrow0.addView(stoptime);
+
+
+
+                stk.addView(tbrow0);
+                stk.addView(tbrow3);
+
+                for(int i = 0; i < rows.size();i++){
+                    TableRow tbrow = new TableRow(this);
+                    TableRow tbrow2 = new TableRow(this);
+                    String g = (String)rows.get(i).get(0);
+                    if(busstop.equalsIgnoreCase(g)){
+                         color = 0xff888888;
+                    }else{
+                         color = 0xffcccccc;
+                    }
+
+                    TextView t1v = new TextView(this);
+                    t1v.setText((String)rows.get(i).get(0));
+                    t1v.setGravity(Gravity.CENTER);
+                    t1v.setBackgroundColor(color);
+                    t1v.setPadding(15,0,15,0);
+
+
+                    TextView t3v = new TextView(this);
+                    t3v.setText(" ");
+                    t3v.setGravity(Gravity.CENTER);
+
+                    TextView t2v = new TextView(this);
+                    t2v.setText((String)rows.get(i).get(1));
+                    t2v.setGravity(Gravity.CENTER);
+                    t2v.setPadding(15,0,15,0);
+                    t2v.setBackgroundColor(color);
+
+                    tbrow.addView(t1v);
+                    tbrow.addView(t3v);
+                    tbrow.addView(t2v);
+                    TextView t4v = new TextView(this);
+                    t4v.setText("");
+                    t4v.setGravity(Gravity.CENTER);
+                    t4v.setHeight(7);
+                    tbrow2.addView(t4v);
+                    stk.addView(tbrow);
+                    stk.addView(tbrow2);
+                }
+            }
+        }
+
+        txtclose = (TextView) myDialog1.findViewById(R.id.txtclose1);
+           myDialog1.show();
+        txtclose.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v) {
+
+                myDialog1.dismiss();
+
+
+            }
+        });
+
+
 
     }
 
@@ -1159,7 +1268,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
         else{
-            //buspopup(findViewById(R.id.pop));
+            try {
+                buspopup(findViewById(R.id.table_bus),marker);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 
         }

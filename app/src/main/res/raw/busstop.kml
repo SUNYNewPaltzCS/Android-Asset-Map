@@ -6,7 +6,8 @@
 	<Snippet maxLines="0"></Snippet>
 	<Style id="northside">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/northside.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -23,7 +24,8 @@
 	
 	<Style id="southside">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/southside.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -40,7 +42,8 @@
 	
 	<Style id="broadway">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/broadway.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -57,7 +60,8 @@
 
 	<Style id="crosstown">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/crosstown.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -74,7 +78,8 @@
 
 	<Style id="rt1">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/rt1.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -91,7 +96,8 @@
 	
 	<Style id="rt2">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/rt2.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -108,7 +114,8 @@
 	
 	<Style id="rt3">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/rt3.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -125,7 +132,8 @@
 	
 	<Style id="rt4">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/rt4.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -142,7 +150,8 @@
 	
 	<Style id="newbMid">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/newb-mid.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
@@ -159,7 +168,8 @@
 	
 	<Style id="mainline">
 		<IconStyle>
-			<Icon>
+			<scale>2</scale>
+   <Icon>
 				<href>https://www.newburghmap.com/icons/bus_routes/mainline.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
