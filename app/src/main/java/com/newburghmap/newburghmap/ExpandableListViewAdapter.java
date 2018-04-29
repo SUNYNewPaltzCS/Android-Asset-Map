@@ -1,11 +1,18 @@
 package com.newburghmap.newburghmap;
 
 import android.annotation.SuppressLint;
+import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -13,10 +20,16 @@ import java.util.ArrayList;
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     ArrayList<String> type;
-   //ArrayList<ArrayList<String>> subType;
+    ArrayList<String> location;
     String[][] array2d;
-
     Context context;
+
+    //ArrayList<ArrayList<String>> subType;
+
+    public ExpandableListViewAdapter(ArrayList<String> location){
+
+        this.location = location;
+    }
 
     public ExpandableListViewAdapter(Context context) {
 
@@ -84,15 +97,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         final TextView txtView = new TextView(context);
         txtView.setText(array2d[groupPosition][childPosition]);
         txtView.setPadding(100,0,0,0);
-
-        txtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, txtView.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
         return txtView;
 
 
@@ -100,6 +104,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

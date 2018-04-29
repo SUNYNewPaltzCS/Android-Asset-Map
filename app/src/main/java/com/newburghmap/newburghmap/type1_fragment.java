@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,9 @@ public class type1_fragment extends Fragment {
     private ArrayList<String> subArrayList2 = new ArrayList<String>();
 
 
+    public type1_fragment(){
 
+    }
 
 
 //    @SuppressLint("ValidFragment")
@@ -50,23 +53,7 @@ public class type1_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         View view = inflater.inflate(R.layout.fragment_type1_fragment, container, false);
-
-                //possible lines needed for expandable list
-//        ExpandableListView elv = (ExpandableListView) view.findViewById(R.id.type1Menu);
-//        elv.setAdapter(new ExpandableListViewAdapter(type, examples));
-
-
-
-//        ListView listView = (ListView) view.findViewById((R.id.type1Menu));
-//
-//        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-//                getActivity(), android.R.layout.simple_list_item_1, type);
-//
-//        listView.setAdapter(listViewAdapter);
-
 
         // Inflate the layout for this fragment
         return view;
@@ -76,19 +63,8 @@ public class type1_fragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        subArrayList.add("girls");
-//        subArrayList.add("Drool");
-//        subArrayList.add("boys");
-//        subArrayList.add("rule");
-//
-//        subArrayList2.add("ring");
-//        subArrayList2.add("around");
-//        subArrayList2.add("the");
-//        subArrayList2.add("rosie");
-//
-//        mainArrayList.add((subArrayList));
-//        mainArrayList.add((subArrayList2));
 
+        //turns an arraylist into a String[][]
         String[][] array2d = new String[mainArrayList.size()][];
         for (int i = 0; i < mainArrayList.size(); i++) {
             ArrayList<String> row = mainArrayList.get(i);
@@ -98,6 +74,17 @@ public class type1_fragment extends Fragment {
         expandableListView = (ExpandableListView) view.findViewById(R.id.type1Menu);
         ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getActivity(),type,array2d);
         expandableListView.setAdapter(expandableListViewAdapter);
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //ft.addToBackStack(null);
+                ft.replace(R.id.fragmentFrame, new type2_fragment());
+                ft.commit();
+                return false;
+            }
+        });
 
 
     }

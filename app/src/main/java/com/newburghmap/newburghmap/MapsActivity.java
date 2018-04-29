@@ -141,8 +141,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
-
         mDrawerLayout =  findViewById(R.id.drawerLayout);
 
         NavigationView navigationView =  (NavigationView) findViewById(R.id.nav_view);
