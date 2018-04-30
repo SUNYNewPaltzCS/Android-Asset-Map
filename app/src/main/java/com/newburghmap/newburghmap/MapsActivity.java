@@ -127,6 +127,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         private DrawerLayout mDrawerLayout;
         private ActionBarDrawerToggle mToggle;
 
+        Fragment fragment = null;
+        Fragment fragment2 = new type2_fragment();
+
         //language toggle
         private ToggleButton langToggle;
         private Boolean spanish = false;
@@ -249,7 +252,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean onNavigationItemSelected(MenuItem item) {
-
         displayView(item.getItemId());
         return true;
     }
@@ -686,84 +688,83 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void displayView(int viewId) {
 
-        Fragment fragment = null;
         String title = getString(R.string.app_name);
         viewIsAtHome = true;
 
         switch (viewId) {
 
             case R.id.nav_education:
-                fragment = new type1_fragment(types("education"),subTypes(types("education")));
+                fragment = new type1_fragment(types("education"),subTypes(types("education")), fragment2);
                 title = "Education";
                 clearMap();
                 populateMapFromFusionTables("education");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_employment:
-                fragment = new type1_fragment(types("employment"),subTypes(types("employment")));
+                fragment = new type1_fragment(types("employment"),subTypes(types("employment")), fragment2);
                 title = "Employment";
                 clearMap();
                 populateMapFromFusionTables("employment");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_family:
-                fragment = new type1_fragment(types("family"),subTypes(types("family")));
+                fragment = new type1_fragment(types("family"),subTypes(types("family")), fragment2);
                 title = "Family";
                 clearMap();
                 populateMapFromFusionTables("family");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_financial:
-                fragment = new type1_fragment(types("financial"),subTypes(types("financial")));
+                fragment = new type1_fragment(types("financial"),subTypes(types("financial")), fragment2);
                 title = "Financial";
                 clearMap();
                 populateMapFromFusionTables("financial");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_food:
-                fragment = new type1_fragment(types("food"),subTypes(types("food")));
+                fragment = new type1_fragment(types("food"),subTypes(types("food")), fragment2);
                 title = "Food";
                 clearMap();
                 populateMapFromFusionTables("food");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_health:
-                fragment = new type1_fragment(types("health"),subTypes(types("health")));
+                fragment = new type1_fragment(types("health"),subTypes(types("health")), fragment2);
                 title = "Health";
                 clearMap();
                 populateMapFromFusionTables("health");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_housing:
-                fragment = new type1_fragment(types("housing"),subTypes(types("housing")));
+                fragment = new type1_fragment(types("housing"),subTypes(types("housing")), fragment2);
                 title = "Housing";
                 clearMap();
                 populateMapFromFusionTables("housing");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_legal:
-                fragment = new type1_fragment(types("legal"),subTypes(types("legal")));
+                fragment = new type1_fragment(types("legal"),subTypes(types("legal")), fragment2);
                 title = "Legal";
                 clearMap();
                 populateMapFromFusionTables("legal");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_lgbtq:
-                fragment = new type1_fragment(types("lGBTQ"),subTypes(types("lGBTQ")));
+                fragment = new type1_fragment(types("lGBTQ"),subTypes(types("lGBTQ")), fragment2);
                 title = "LGBTQ";
                 clearMap();
                 populateMapFromFusionTables("lgbtq");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_transportation:
-                fragment = new type1_fragment(types("transportation"),subTypes(types("transportation")));
+                fragment = new type1_fragment(types("transportation"),subTypes(types("transportation")), fragment2);
                 title = "Transportation";
                 clearMap();
                 populateMapFromFusionTables("transportation");
                 viewIsAtHome = false;
                 break;
             case R.id.nav_veteran:
-                fragment = new type1_fragment(types("veteran"),subTypes(types("veteran")));
+                fragment = new type1_fragment(types("veteran"),subTypes(types("veteran")), fragment2);
                 title = "Veteran";
                 clearMap();
                 populateMapFromFusionTables("veteran");
@@ -843,8 +844,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.41698, -74.32525), 9));
             //reset the title
             getSupportActionBar().setTitle(getString(R.string.app_name));
+            subClose(v);
+            sub2Close(v);
 
         }
+    }
+
+    //Close submenu button
+    public void subClose(View v){
+        //close fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
+        ft.remove(fragment);
+        ft.commit();
+        //reset title
+        getSupportActionBar().setTitle(getString(R.string.app_name));
+    }
+
+    //Close 2nd submenu
+    public void sub2Close(View v){
+        //close fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
+        ft.remove(fragment2);
+        ft.commit();
+        //reset title
+        getSupportActionBar().setTitle(getString(R.string.app_name));
     }
 
     public void clearMap(){

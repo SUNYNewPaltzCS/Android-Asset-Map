@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class type1_fragment extends Fragment {
 
-
+    Fragment fragment2;
     ArrayList<String> type;
     ExpandableListView expandableListView;
     //private String[][] examples = {{"Ed","uc","ation"},{"Emp", "ploy","ment"},{"fa","mi","ly"}};
@@ -43,10 +43,11 @@ public class type1_fragment extends Fragment {
 //    }
 
     @SuppressLint("ValidFragment")
-    public type1_fragment(ArrayList<String> types, ArrayList<ArrayList<String>> mainArrayList) {
+    public type1_fragment(ArrayList<String> types, ArrayList<ArrayList<String>> mainArrayList, Fragment fragment2) {
 
         this.type = types;
         this.mainArrayList = mainArrayList;
+        this.fragment2 = fragment2;
     }
 
     @Override
@@ -79,8 +80,8 @@ public class type1_fragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //ft.addToBackStack(null);
-                ft.replace(R.id.fragmentFrame, new type2_fragment());
+                ft.addToBackStack(null);
+                ft.replace(R.id.fragmentFrame, fragment2);
                 ft.commit();
                 return false;
             }
@@ -88,4 +89,8 @@ public class type1_fragment extends Fragment {
 
 
     }
+
+    public void subClose(View v){
+    }
+
 }
