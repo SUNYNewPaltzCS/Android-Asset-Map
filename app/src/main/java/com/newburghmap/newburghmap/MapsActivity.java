@@ -29,6 +29,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
@@ -119,6 +124,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final String tableId = "1gy6SXW0WexuugOvx6WlkhPcoFOlWTCQoIwd6AX5p";
         final String busTableId = "1C7bjeXCA0PwM423Z2jN5A-Z8wjpnUQa2qqHkIP_8";
                 //"1ImE7O7oSTm9wkj-OhizHpMOiQ-Za9h5jK-vb4qjc";
+//        final String nameBold = new String("name");
+//        final String addressBold = new String("address");
+//        SpannableString test = new SpannableString("name");
+//        android.text.SpannableString.setSpan()(new StyleSpan);
 
         private ArrayList<String> places =  new ArrayList<>(600);
         //private ArrayList<String> types =  new ArrayList<>();
@@ -374,7 +383,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return subtypes;
     }
 
-    public ArrayList<String> locations(String subtype){
+    public ArrayList<Spanned> locations(String subtype){
         InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
         try {
             credential = GoogleCredential
@@ -387,7 +396,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fclient = new Fusiontables.Builder(
                 transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
                 .build();
-        ArrayList<String> locations = new ArrayList<String>();
+        ArrayList<Spanned> locations = new ArrayList<Spanned>();
         try {
 
             Sqlresponse result = null;
@@ -400,21 +409,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (List<Object> poi : rows) {
                 if(!spanish){
                     String check = (String) poi.get(0);
-                    if(subtype.equals(check)){
-                        name = (String) poi.get(3);
-                        address = (String) poi.get(4);
+                    if(subtype.equalsIgnoreCase(check)){
+                        name = (String) poi.get(2);
+                        address = (String) poi.get(3);
                         if(!locations.contains(name)){
-                            locations.add("Name: " + name + "/n Address: " + address);
+                            locations.add(Html.fromHtml("<b>Name:</b> " + name + "<br><b>Address:</b> " + address));
                         }
                     }
                 }
                 else{
                     String check = (String) poi.get(1);
-                    if(subtype.equals(check)){
-                        name = (String) poi.get(3);
-                        address = (String) poi.get(4);
+                    if(subtype.equalsIgnoreCase(check)){
+                        name = (String) poi.get(2);
+                        address = (String) poi.get(3);
                         if(!locations.contains(name)){
-                            locations.add("Name: " + name + "/n Address: " + address);
+                            locations.add(Html.fromHtml("<b>Name:</b> " + name + "<br><b>Address:</b> " + address));
                         }
                     }
                 }

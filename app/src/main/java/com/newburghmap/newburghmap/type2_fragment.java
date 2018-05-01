@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spanned;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +24,13 @@ import java.util.ArrayList;
 public class type2_fragment extends Fragment {
 
     private String[] examples = {"Ed","uc","ation"};
-    private ArrayList<String> locations;
+    private String subtype;
 
     public type2_fragment() {
         // Required empty public constructor
     }
-    @SuppressLint("ValidFragment")
-    public type2_fragment(ArrayList<String> locations){
-        this.locations=locations;
-    }
+    //@SuppressLint("ValidFragment")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,10 +40,13 @@ public class type2_fragment extends Fragment {
     }
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        this.subtype = this.getArguments().getStringArrayList("key").get(0);
+        Activity act = getActivity();
+        act = (MapsActivity) act;
 
         ListView listView = (ListView) view.findViewById((R.id.locationList));
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_list_item_1, examples);
+        ArrayAdapter<Spanned> listViewAdapter = new ArrayAdapter<Spanned>
+                (getActivity(), android.R.layout.simple_list_item_1, ((MapsActivity) act).locations(subtype));
         listView.setAdapter(listViewAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -53,15 +55,14 @@ public class type2_fragment extends Fragment {
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3)
             {
-                String value = (String)adapter.getItemAtPosition(position);
+                Spanned value = (Spanned) adapter.getItemAtPosition(position);
                 Toast.makeText(getActivity(), value,
                         Toast.LENGTH_LONG).show();
             }
         });
 
-        Activity act = getActivity();
-        act = (MapsActivity) act;
-        ((MapsActivity) act).locations("fin_lit");
+
+
     }
 
     public void sub2Close(View v){
