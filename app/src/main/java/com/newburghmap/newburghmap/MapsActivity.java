@@ -1175,7 +1175,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             Sqlresponse result = null;
-            String q = "SELECT latitude, longitude, 'group', subtype,  FROM "+tableId;
+            String q = "SELECT latitude, longitude, 'group', subtype FROM "+tableId;
 
             result = query(tableId,q);
 
