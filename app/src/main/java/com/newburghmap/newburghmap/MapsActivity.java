@@ -932,7 +932,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(iconRetrieve(group)))
-                                .setTitle("places");
+                                .setTag("places");
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                         break;
                     }
@@ -1154,6 +1154,68 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    public void populateMapFromFusionTable(String subtype) {
+
+        // TODO: to mak credentialsJSON work, you need to browse to https://console.developers.google.com/iam-admin/serviceaccounts/
+        // create a service account with role "project > service account actor" (generate key), download the json file
+        // rename it to service_account_credentials.json and place it under app/res/raw/
+        InputStream credentialsJSON = getResources().openRawResource(getResources().getIdentifier("service_account_credentials", "raw", getPackageName()));
+        try {
+            credential = GoogleCredential
+                    .fromStream(credentialsJSON, transport, jsonFactory)
+                    .createScoped(Collections.singleton(FusiontablesScopes.FUSIONTABLES_READONLY));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fclient = new Fusiontables.Builder(
+                transport, jsonFactory, credential).setApplicationName("TestMap/1.0")
+                .build();
+
+        try {
+
+            Sqlresponse result = null;
+            String q = "SELECT latitude, longitude, 'group', subtype,  FROM "+tableId;
+
+            result = query(tableId,q);
+
+
+            List<List<Object>> rows = result.getRows();
+
+            Log.i(TAG, "Got " + rows.size() + " POIs from fusion tables.");
+
+            if (mMap != null) {
+
+                for (List<Object> poi : rows) {
+
+                    BigDecimal lat = (BigDecimal) poi.get(0);
+                    BigDecimal lon = (BigDecimal) poi.get(1);
+                    LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
+
+                    String g = (String) poi.get(2);
+                    String st = (String) poi.get(3);
+
+                    //used for populating map by subtype
+                    if(subtype.equals(st)){
+                        mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .icon(iconRetrieve(g)))
+                                .setTag("places");
+                    }
+                }
+
+            } else {
+                Log.i(TAG, "mMap is null, not placing markers.");
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void populateMapFromFusionTables(String group) {
 
 
@@ -1200,13 +1262,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mMap.addMarker(new MarkerOptions()
                                     .position(latLng)
                                     .icon(iconRetrieve(g)))
-                                    .setTitle("places");
+                                    .setTag("places");
                         }
                         else if(group.equals("all")){
                             mMap.addMarker(new MarkerOptions()
                                     .position(latLng)
                                     .icon(iconRetrieve(g)))
-                                    .setTitle("places");
+                                    .setTag("places");
                         }
 
                     }
@@ -1274,7 +1336,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(iconRetrieve(group)))
-                                .setTitle("places");
+                                .setTag("places");
                     }
                 }
             } else {
@@ -1293,7 +1355,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         System.out.println(marker.getClass());
         System.out.println(marker.getTitle());
-        if(marker.getTitle().toString().equalsIgnoreCase("places")){
+        if(marker.getTag().toString().equalsIgnoreCase("places")){
             latilngi = marker.getPosition();
             try {
                 InfoWindow(findViewById(R.id.streetviewpanorama),marker);

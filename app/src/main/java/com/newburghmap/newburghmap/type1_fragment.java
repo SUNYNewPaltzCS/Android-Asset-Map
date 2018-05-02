@@ -1,6 +1,7 @@
 package com.newburghmap.newburghmap;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,7 +65,6 @@ public class type1_fragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         //turns an arraylist into a String[][]
         String[][] array2d = new String[mainArrayList.size()][];
         for (int i = 0; i < mainArrayList.size(); i++) {
@@ -88,6 +88,11 @@ public class type1_fragment extends Fragment {
                 subtypeBun.putStringArrayList("key", bbt);
                 fragment2.setArguments(subtypeBun);
                 ft.commit();
+
+                Activity act = getActivity();
+                act = (MapsActivity) act;
+                ((MapsActivity) act).clearMap();
+                ((MapsActivity) act).populateMapFromFusionTable(mainArrayList.get(groupPosition).get(childPosition));
                 return false;
             }
         });//mainArrayList.get(groupPosition).get(childPosition)
