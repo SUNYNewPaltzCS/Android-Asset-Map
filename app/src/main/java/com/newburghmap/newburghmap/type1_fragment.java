@@ -92,7 +92,7 @@ public class type1_fragment extends Fragment {
                 Activity act = getActivity();
                 act = (MapsActivity) act;
                 ((MapsActivity) act).clearMap();
-                //((MapsActivity) act).populateMapFromFusionTable(mainArrayList.get(groupPosition).get(childPosition));
+                ((MapsActivity) act).populateMapFromFusionTable(mainArrayList.get(groupPosition).get(childPosition));
 
                 return false;
             }
