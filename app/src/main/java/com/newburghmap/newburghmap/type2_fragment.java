@@ -43,7 +43,7 @@ public class type2_fragment extends Fragment {
         Activity act = getActivity();
         act = (MapsActivity) act;
 
-        ListView listView = (ListView) view.findViewById((R.id.locationList));
+        final ListView listView = (ListView) view.findViewById((R.id.locationList));
         ArrayAdapter<Spanned> listViewAdapter = new ArrayAdapter<Spanned>
                 (getActivity(), android.R.layout.simple_list_item_1, ((MapsActivity) act).locations(subtype));
         listView.setAdapter(listViewAdapter);
@@ -55,6 +55,14 @@ public class type2_fragment extends Fragment {
                                     long arg3)
             {
                 Spanned value = (Spanned) adapter.getItemAtPosition(position);
+
+                Activity act2 = getActivity();
+                act2 = (MapsActivity) act2;
+               // ((MapsActivity) act2).InfoWindow(listView,);
+
+
+
+
                 Toast.makeText(getActivity(), value,
                         Toast.LENGTH_LONG).show();
             }
