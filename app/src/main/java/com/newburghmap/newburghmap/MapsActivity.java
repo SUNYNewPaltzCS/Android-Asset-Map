@@ -293,18 +293,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (List<Object> poi : rows) {
                 String check = (String) poi.get(0);
                 if(group.equals(check)){
-                    if(!spanish){
+                    //if(!spanish){
                         typ = (String) poi.get(1);
                         if(!types.contains(typ)){
                             types.add(typ);
                         }
-                    }
+                    /*}
                     else{
                         typ = (String) poi.get(2);
                         if(!types.contains(typ)){
                             types.add(typ);
                         }
-                    }
+                    }*/
 
 
                 }
@@ -347,7 +347,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 for (List<Object> poi : rows) {
                     String check = (String) poi.get(0);
                     if (type.get(i).equals(check)) {
-                        if (!spanish) {
+                        //if (!spanish) {
                             subtyp = (String) poi.get(1);
                             if(subtypes.size() > i){
                                 if (!subtypes.get(i).contains(subtyp)) {
@@ -359,7 +359,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 subtypes.add(new ArrayList<String>());
                                 subtypes.get(i).add(subtyp);
                             }
-                        } else {
+                        /*} else {
                             subtyp = (String) poi.get(2);
                             if(subtypes.size() > i){
                                 if (!subtypes.get(i).contains(subtyp)) {
@@ -371,7 +371,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 subtypes.add(new ArrayList<String>());
                                 subtypes.get(i).add(subtyp);
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -407,7 +407,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             List<List<Object>> rows = result.getRows();
 
             for (List<Object> poi : rows) {
-                if(!spanish){
+                //if(!spanish){
                     String check = (String) poi.get(0);
                     if(subtype.equalsIgnoreCase(check)){
                         name = (String) poi.get(2);
@@ -416,7 +416,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             locations.add(Html.fromHtml("<b>Name:</b> " + name + "<br><b>Address:</b> " + address));
                         }
                     }
-                }
+                /*}
                 else{
                     String check = (String) poi.get(1);
                     if(subtype.equalsIgnoreCase(check)){
@@ -426,7 +426,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             locations.add(Html.fromHtml("<b>Name:</b> " + name + "<br><b>Address:</b> " + address));
                         }
                     }
-                }
+                }*/
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
