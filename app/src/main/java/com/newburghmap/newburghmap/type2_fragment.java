@@ -15,7 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,13 +61,19 @@ public class type2_fragment extends Fragment {
 
                 Activity act2 = getActivity();
                 act2 = (MapsActivity) act2;
-               // ((MapsActivity) act2).InfoWindow(listView,);
+                try {
+                    ((MapsActivity) act2).latilngi = new LatLng(Double.parseDouble(((MapsActivity) act2).latit.get(position)), Double.parseDouble(((MapsActivity) act2).longi.get(position)));
+                    ((MapsActivity) act2).InfoWindow(listView, ((MapsActivity) act2).latit.get(position), ((MapsActivity) act2).longi.get(position));
+                }catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
 
 
-
-                Toast.makeText(getActivity(), value,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), value,
+//                        Toast.LENGTH_LONG).show();
             }
         });
 
