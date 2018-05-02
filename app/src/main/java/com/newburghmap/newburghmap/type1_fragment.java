@@ -86,13 +86,17 @@ public class type1_fragment extends Fragment {
                 ArrayList<String> bbt = new ArrayList<String>();
                 bbt.add(mainArrayList.get(groupPosition).get(childPosition));
                 subtypeBun.putStringArrayList("key", bbt);
+
+
                 fragment2.setArguments(subtypeBun);
+
                 ft.commit();
 
                 Activity act = getActivity();
                 act = (MapsActivity) act;
                 ((MapsActivity) act).clearMap();
                 ((MapsActivity) act).populateMapFromFusionTable(mainArrayList.get(groupPosition).get(childPosition));
+
 
                 return false;
             }

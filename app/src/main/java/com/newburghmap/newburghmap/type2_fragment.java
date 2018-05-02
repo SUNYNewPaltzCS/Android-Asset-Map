@@ -15,7 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +46,7 @@ public class type2_fragment extends Fragment {
         Activity act = getActivity();
         act = (MapsActivity) act;
 
-        ListView listView = (ListView) view.findViewById((R.id.locationList));
+        final ListView listView = (ListView) view.findViewById((R.id.locationList));
         ArrayAdapter<Spanned> listViewAdapter = new ArrayAdapter<Spanned>
                 (getActivity(), android.R.layout.simple_list_item_1, ((MapsActivity) act).locations(subtype));
         listView.setAdapter(listViewAdapter);
@@ -55,8 +58,22 @@ public class type2_fragment extends Fragment {
                                     long arg3)
             {
                 Spanned value = (Spanned) adapter.getItemAtPosition(position);
-                Toast.makeText(getActivity(), value,
-                        Toast.LENGTH_LONG).show();
+
+                Activity act2 = getActivity();
+                act2 = (MapsActivity) act2;
+                try {
+                    ((MapsActivity) act2).latilngi = new LatLng(Double.parseDouble(((MapsActivity) act2).latit.get(position)), Double.parseDouble(((MapsActivity) act2).longi.get(position)));
+                    ((MapsActivity) act2).InfoWindow(listView, ((MapsActivity) act2).latit.get(position), ((MapsActivity) act2).longi.get(position));
+                }catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+
+//                Toast.makeText(getActivity(), value,
+//                        Toast.LENGTH_LONG).show();
             }
         });
 

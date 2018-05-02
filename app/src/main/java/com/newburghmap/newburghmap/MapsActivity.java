@@ -110,7 +110,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         private Marker currentLocationMarker;
         private boolean viewIsAtHome;
         public static final int REQUEST_LOCATION_CODE = 99;
-        public static LatLng latilngi;
+        public LatLng latilngi;
         int busClick = 0;
         KmlLayer kml;
         KmlLayer kml1;
@@ -130,8 +130,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        android.text.SpannableString.setSpan()(new StyleSpan);
 
         private ArrayList<String> places =  new ArrayList<>(600);
-        //private ArrayList<String> types =  new ArrayList<>();
-        //private ArrayList<String> subTypes =  new ArrayList<>();
+        public ArrayList<String> latit =  new ArrayList<>();
+        public ArrayList<String> longi =  new ArrayList<>();
 
         private DrawerLayout mDrawerLayout;
         private ActionBarDrawerToggle mToggle;
@@ -401,7 +401,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Sqlresponse result = null;
             String name, address;
-            String q = "SELECT subtype, subtypeES, name, address FROM "+tableId;
+            String q = "SELECT subtype, subtypeES, name, address, latitude, longitude FROM "+tableId;
 
             result = query(tableId,q);
             List<List<Object>> rows = result.getRows();
@@ -414,6 +414,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         address = (String) poi.get(3);
                         if(!locations.contains(name)){
                             locations.add(Html.fromHtml("<b>Name:</b> " + name + "<br><b>Address:</b> " + address));
+                            longi.add(""+ poi.get(5));
+                            latit.add(""+ poi.get(4));
                         }
                     }
                 /*}
@@ -567,7 +569,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //This opens the custompopup.xml with the streetview and other info about the marker.
-    public void InfoWindow(View v,Marker mm) throws ExecutionException, InterruptedException {
+    public void InfoWindow(View v, String lat, String lon) throws ExecutionException, InterruptedException {
         TextView txtclose;
 
 
@@ -586,7 +588,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         Sqlresponse result;
-        String q = "SELECT name, description, DesctriptionES, address, phone , hours , hoursES, link  FROM "+tableId+" WHERE latitude = "+mm.getPosition().latitude+" AND longitude = "+mm.getPosition().longitude ;
+        String q = "SELECT name, description, DesctriptionES, address, phone , hours , hoursES, link  FROM "+tableId+" WHERE latitude = "+lat+" AND longitude = "+lon ;
 
 
         result = query(tableId,q);
@@ -1358,7 +1360,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(marker.getTag().toString().equalsIgnoreCase("places")){
             latilngi = marker.getPosition();
             try {
-                InfoWindow(findViewById(R.id.streetviewpanorama),marker);
+                InfoWindow(findViewById(R.id.streetviewpanorama), ""+marker.getPosition().latitude ,""+marker.getPosition().longitude);
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
