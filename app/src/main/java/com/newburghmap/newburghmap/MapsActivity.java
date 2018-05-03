@@ -934,7 +934,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(iconRetrieve(group)))
-                                .setTag("places");
+                                .setTitle("places");
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                         break;
                     }
@@ -1202,7 +1202,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(iconRetrieve(g)))
-                                .setTag("places");
+                                .setTitle("places");
                     }
                 }
 
@@ -1264,13 +1264,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mMap.addMarker(new MarkerOptions()
                                     .position(latLng)
                                     .icon(iconRetrieve(g)))
-                                    .setTag("places");
+                                    .setTitle("places");
                         }
                         else if(group.equals("all")){
                             mMap.addMarker(new MarkerOptions()
                                     .position(latLng)
                                     .icon(iconRetrieve(g)))
-                                    .setTag("places");
+                                    .setTitle("places");
                         }
 
                     }
@@ -1338,7 +1338,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(iconRetrieve(group)))
-                                .setTag("places");
+                                .setTitle("places");
                     }
                 }
             } else {
@@ -1357,7 +1357,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         System.out.println(marker.getClass());
         System.out.println(marker.getTitle());
-        if(marker.getTag().toString().equalsIgnoreCase("places")){
+        if(marker.getTitle().toString().equalsIgnoreCase("places")){
             latilngi = marker.getPosition();
             try {
                 InfoWindow(findViewById(R.id.streetviewpanorama), ""+marker.getPosition().latitude ,""+marker.getPosition().longitude);
