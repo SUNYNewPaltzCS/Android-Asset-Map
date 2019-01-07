@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.newburghmap.newburghmap">
 
     <!--
@@ -7,18 +8,33 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+                     android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"
+                     android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+                     android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.INTERNET"
+                     android:protectionLevel="normal" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"
+                     android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"
+                     android:protectionLevel="normal" />
+
+    <!--added-->
+    <uses-permission android:name="android.permission.SUBSCRIBED_FEEDS_READ" />
+    <uses-permission android:name="android.permission.SUBSCRIBED_FEEDS_WRITE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
 
     <permission
         android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE" />
+
 
     <!-- added for Google Play? -->
     <uses-feature
@@ -31,7 +47,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -57,6 +77,7 @@
         </activity>
 
         <uses-library android:name="com.google.android.maps" />
+
 
     </application>
 
